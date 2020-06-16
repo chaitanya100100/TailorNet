@@ -1,19 +1,27 @@
 import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
-LOG_DIR = '/BS/cpatel/work/data/learn_anim'
-TEMP_DIR = '/BS/cloth-anim/nobackup/temp'
 
+# Dataset root directory. Change it to point to downloaded data root directory
+DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
+
+# Log directory where training logs and checkpoints will be stored
+LOG_DIR = '/BS/cpatel/work/data/learn_anim'
+
+# Available genders
 GENDERS = ['neutral', 'male', 'female']
 
-# Split path
-SPLIT_FILE = '/BS/cpatel/work/data/split_static_pose_shape.npz'
+# This file contains pose indices (out of all SMPL poses) of train/test splits
+# as a dict {'train': <train_indices>, 'test': <test_indices>}
+POSE_SPLIT_FILE = 'split_static_pose_shape.npz'
 
-# Name of garment class info file
+# This file contains garment template information in format
+# { <garment_class>: {'vert_indices': <vert_indices>, 'f': <faces>} }
+# where <vert_indices> refers to the indices of high_resolution SMPL
+# template which make <garment_class> garment
 GAR_INFO_FILE = 'garment_class_info.pkl'
 
-# Set your SMPL paths here
+# Set the paths to SMPL model
 SMPL_PATH_NEUTRAL = '/BS/RVH/work/data/smpl_models/neutral/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl'
 SMPL_PATH_MALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/male/model.pkl'
 SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/female/model.pkl'
@@ -21,9 +29,12 @@ SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed
 # Skirt template path
 SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
 
-# outdir for smooth data
-SMOOTH_OUT_DIR = "/BS/cpatel/static00/tailor_data"
-CACHED_SMOOTH = False
+# Root dir for smooth data. Groundtruth smooth data is stored in the same hierarchy under
+# this directory.
+SMOOTH_OUT_DIR = DATA_DIR
+# Indicates that smooth groundtruth data is available or not. If not available, smoothing
+# will be performed during the training which might slow down the training.
+SMOOTH_STORED = True
 
 """
 ## SMPL joint
