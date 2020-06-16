@@ -140,4 +140,4 @@ if __name__ == '__main__':
     #mv = MeshViewer()
     #mv.set_static_meshes([Mesh(smpl.r, smpl.f)])
 
-    raw_input("Press Enter to continue...")
+    input("Press Enter to continue...")

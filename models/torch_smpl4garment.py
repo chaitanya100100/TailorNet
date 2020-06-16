@@ -102,9 +102,9 @@ def batch_orth_proj(X, camera):
     return (camera[:, :, 0] * X_trans.view(shape[0], -1)).view(shape)
 
 
-class TorchSMPL4GarmentZhou(nn.Module):
+class TorchSMPL4Garment(nn.Module):
     def __init__(self, gender):
-        super(TorchSMPL4GarmentZhou, self).__init__()
+        super(TorchSMPL4Garment, self).__init__()
 
         # with open(model_path, 'rb') as reader:
         #     model = pickle.load(reader, encoding='iso-8859-1')
@@ -352,58 +352,6 @@ class TorchSMPL4GarmentZhou(nn.Module):
 
 
 if __name__ == "__main__":
-    from models.smpl4garment import SMPL4Garment
-    import time
-    import copy
-
-    # device = torch.device("cuda")
     device = torch.device("cpu")
     gender = 'female'
-
-    smpl_orig = SMPL4Garment(gender=gender)
-    smpl = TorchSMPL4GarmentZhou(gender=gender).to(device)
-    batch_size = 5
-
-    verts = np.load(
-        "/BS/cloth-anim/work/data/md/female_smooth_TShirtNoCoat_pcagen_staticshape/000/unpose_0.npz"
-    )['data']
-    thetas = np.load(
-        "/BS/cloth-anim/work/data/md/female_smooth_TShirtNoCoat_pcagen_staticshape/000/poses.npz"
-    )['thetas']
-    betas = np.tile(np.load(
-        "/BS/cloth-anim/work/data/md/female_smooth_TShirtNoCoat_pcagen_staticshape/000/beta_0.npy"
-    )[np.newaxis, :10], [10, 1])
-
-    body_orig, gar_orig = smpl_orig.run(theta=thetas[2], beta=betas[2],
-                                        garment_d=verts[2], garment_class="smooth_TShirtNoCoat")
-
-    d = torch.tensor(verts[:batch_size], dtype=torch.float32).to(device)
-    thetas = torch.tensor(thetas[:batch_size], dtype=torch.float32).to(device)
-    betas = torch.tensor(betas[:batch_size], dtype=torch.float32).to(device)
-
-    st_time = time.time()
-    verts_body, verts_garment = smpl.forward(theta=thetas, beta=betas, garment_d=d, garment_class="TShirtNoCoat")
-    d_back = smpl.forward_unpose_deformation(theta=thetas, beta=betas, verts=verts_garment, garment_class="TShirtNoCoat")
-    print(time.time()-st_time)
-
-    gar_my = copy.copy(gar_orig)
-    gar_my.v = verts_garment[2].detach().cpu().numpy()
-
-    body_my = copy.copy(body_orig)
-    body_my.v = verts_body[2].detach().cpu().numpy()
-
-    body_my2, gar_my2 = smpl_orig.run(theta=thetas.numpy()[2], beta=betas.numpy()[2],
-                                      garment_d=d_back.numpy()[2], garment_class="TShirtNoCoat")
-
-    print(gar_my.v-gar_my2.v)
-    # from psbody.mesh import MeshViewers
-    # mv = MeshViewers((1, 3))
-    # mv[0][0].set_static_meshes([gar_orig])
-    # mv[0][1].set_static_meshes([gar_my])
-    # mv[0][2].set_static_meshes([gar_my2])
-    # mv1 = MeshViewers((1, 3))
-    # mv1[0][0].set_static_meshes([body_orig])
-    # mv1[0][1].set_static_meshes([body_my])
-    # mv1[0][2].set_static_meshes([body_my2])
-    import ipdb
-    ipdb.set_trace()
+    smpl = TorchSMPL4Garment(gender=gender).to(device)

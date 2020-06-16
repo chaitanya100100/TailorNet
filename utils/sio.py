@@ -41,7 +41,7 @@ def prepare_log_dir(log_name):
         if sys.version_info.major == 3:
             a = input(warning_info)
         else:
-            a = raw_input(warning_info)
+            a = input(warning_info)
         if a != 'y':
             exit()
 
@@ -59,26 +59,6 @@ def save_params(log_dir, params, save_name="params"):
         save_name = save_name + "({})".format(same_num)
     with open(os.path.join(log_dir, save_name+".json"), 'w') as f:
         json.dump(params, f)
-
-
-def img_normalized(img, mini=None, maxi=None):
-    mini = img.min() if mini is None else mini
-    maxi = img.max() if maxi is None else maxi
-
-    img = 254.0 * (img - mini) / (maxi - mini) + 0.01
-    img[img > 255] = 255
-    img[img < 0] = 0
-    img = img.astype(np.uint8)
-    return img
-
-
-def save_img_normalized(filename, img, mini = None, maxi = None):
-    img = img_normalized(img, mini, maxi)
-    if img.shape[2] != 3 and img.shape[0] == 3:
-        img = np.transpose(img, (1, 2, 0))
-
-    cv2.imwrite(filename, cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
-    # cv2.imwrite(filename, img)
 
 
 def save_pc2(vertices, path):

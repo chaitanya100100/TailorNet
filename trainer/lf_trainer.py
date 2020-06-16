@@ -8,7 +8,7 @@ import argparse
 import json
 import os
 import torch
-from . import base_trainer
+import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")
@@ -35,18 +35,18 @@ def parse_argument():
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--weight_decay', default=1e-6, type=float)
-    parser.add_argument('--max_epoch', default=2, type=int)
+    parser.add_argument('--max_epoch', default=100, type=int)
     parser.add_argument('--start_epoch', default=0, type=int)
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3lf")
+    parser.add_argument('--log_name', default="test_py3_lf")
 
     # smooth_level=1 will train TailorNet low frequency predictor
     parser.add_argument('--smooth_level', default=1, type=int)
 
     # model specification.
-    parser.add_argument('--model_name', default="FcModified")
+    parser.add_argument('--model_name', default="FullyConnected")
     parser.add_argument('--num_layers', default=3)
     parser.add_argument('--hidden_size', default=1024)
 
@@ -72,19 +72,14 @@ def main():
     print("start training {}".format(params['garment_class']))
     trainer = LFTrainer(params)
 
-    # try:
-    if True:
-        for i in range(params['start_epoch'], params['max_epoch']):
-            print("epoch: {}".format(i))
-            trainer.train(i)
-            trainer.validate(i)
-            # trainer.save_ckpt(i)
+    for i in range(params['start_epoch'], params['max_epoch']):
+        print("epoch: {}".format(i))
+        trainer.train(i)
+        trainer.validate(i)
+        # trainer.save_ckpt(i)
 
-        # except Exception as e:
-    #     print(str(e))
-    # finally:
-        trainer.write_log()
-        print("safely quit!")
+    trainer.write_log()
+    print("safely quit!")
 
 
 if __name__ == '__main__':

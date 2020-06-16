@@ -138,7 +138,6 @@ class Trainer(object):
             self.iter_nums += 1
 
         self.logger.add_scalar("train_epoch/loss", epoch_loss.avg, epoch)
-        # self._save_ckpt(epoch)
 
     def update_metrics(self, metrics, inputs, outputs):
         gt_verts = inputs[0]
@@ -264,12 +263,12 @@ def get_best_runner(log_dir, epoch_num=None):
 
     # if epoch_num is not given then pick up the best epoch
     if epoch_num is None:
-        with open(os.path.join(ckpt_dir, 'best_epoch')) as f:
-            best_epoch = int(f.read().strip())
+        ckpt_path = os.path.join(ckpt_dir, 'lin.pth.tar')
     else:
+        # with open(os.path.join(ckpt_dir, 'best_epoch')) as f:
+        #     best_epoch = int(f.read().strip())
         best_epoch = epoch_num
-    ckpt_path = os.path.join(ckpt_dir, "{:04d}".format(best_epoch), 'lin.pth.tar')
-    ckpt_path = os.path.join(ckpt_dir, 'lin.pth.tar')
+        ckpt_path = os.path.join(ckpt_dir, "{:04d}".format(best_epoch), 'lin.pth.tar')
 
     runner = Runner(ckpt_path, params)
     return runner
@@ -288,23 +287,23 @@ def parse_argument():
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--weight_decay', default=1e-6, type=float)
-    parser.add_argument('--max_epoch', default=2, type=int)
+    parser.add_argument('--max_epoch', default=100, type=int)
     parser.add_argument('--start_epoch', default=0, type=int)
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3")
+    parser.add_argument('--log_name', default="test_py3_baseline")
 
     # smooth_level=0 will train TailorNet MLP baseline
     parser.add_argument('--smooth_level', default=0, type=int)
 
     # model specification.
-    parser.add_argument('--model_name', default="FcModified")
+    parser.add_argument('--model_name', default="FullyConnected")
     parser.add_argument('--num_layers', default=3)
-    parser.add_argument('--hidden_size', default=1048+512)
+    parser.add_argument('--hidden_size', default=1048)
 
     # small experiment description
-    parser.add_argument('--note', default="MLP Baseline bigger hidden")
+    parser.add_argument('--note', default="MLP Baseline")
 
     args = parser.parse_args()
     params = args.__dict__
@@ -325,19 +324,14 @@ def main():
     print("start training {}".format(params['garment_class']))
     trainer = Trainer(params)
 
-    # try:
-    if True:
-        for i in range(params['start_epoch'], params['max_epoch']):
-            print("epoch: {}".format(i))
-            trainer.train(i)
-            trainer.validate(i)
-            # trainer.save_ckpt(i)
+    for i in range(params['start_epoch'], params['max_epoch']):
+        print("epoch: {}".format(i))
+        trainer.train(i)
+        trainer.validate(i)
+        # trainer.save_ckpt(i)
 
-        # except Exception as e:
-    #     print(str(e))
-    # finally:
-        trainer.write_log()
-        print("safely quit!")
+    trainer.write_log()
+    print("safely quit!")
 
 
 if __name__ == '__main__':

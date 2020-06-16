@@ -1,3 +1,9 @@
+"""
+Implements trainer class to predict deformations in canonical pose.
+
+It overloads base_trainer.Trainer class. This predictor is used in
+TailorNet to get the weights of pivot high frequency outputs.
+"""
 import os
 import argparse
 import torch
@@ -24,7 +30,7 @@ class SS2GTrainer(base_trainer.Trainer):
             drop_last = True
         else:
             drop_last = False
-        dataloader = DataLoader(dataset, batch_size=self.bs, num_workers=6, shuffle=shuffle,
+        dataloader = DataLoader(dataset, batch_size=self.bs, num_workers=0, shuffle=shuffle,
                                 drop_last=drop_last)
         return dataset, dataloader
 
@@ -95,12 +101,12 @@ def get_best_runner(log_dir, epoch_num=None):
 
     # if epoch_num is not given then pick up the best epoch
     if epoch_num is None:
-        with open(os.path.join(ckpt_dir, 'best_epoch')) as f:
-            best_epoch = int(f.read().strip())
+        ckpt_path = os.path.join(ckpt_dir, 'lin.pth.tar')
     else:
+        # with open(os.path.join(ckpt_dir, 'best_epoch')) as f:
+        #     best_epoch = int(f.read().strip())
         best_epoch = epoch_num
-    ckpt_path = os.path.join(ckpt_dir, "{:04d}".format(best_epoch), 'lin.pth.tar')
-    ckpt_path = os.path.join(ckpt_dir, 'lin.pth.tar')
+        ckpt_path = os.path.join(ckpt_dir, "{:04d}".format(best_epoch), 'lin.pth.tar')
 
     runner = Runner(ckpt_path, params)
     return runner
@@ -130,7 +136,7 @@ def parse_argument():
     parser.add_argument('--smooth_level', default=0, type=int)
 
     # model specification.
-    parser.add_argument('--model_name', default="FcModified")
+    parser.add_argument('--model_name', default="FullyConnected")
     parser.add_argument('--num_layers', default=3)
     parser.add_argument('--hidden_size', default=128)
 

@@ -16,7 +16,7 @@ from models import networks
 from models import ops
 from dataset.static_pose_shape_final import OneStyleShapeHF
 import global_var
-from . import base_trainer
+import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")
@@ -111,19 +111,20 @@ class Runner(object):
         self.model.to(device)
 
 
-def get_best_runner(log_dir, epoch_num=None, take_last=False):
+def get_best_runner(log_dir, epoch_num=None):
     """Returns a trained model runner given the log_dir."""
     ckpt_dir = log_dir
     with open(os.path.join(ckpt_dir, 'params.json')) as jf:
         params = json.load(jf)
 
-    if epoch_num is not None or take_last:
-        take_epoch = epoch_num
-        if take_last:
-            take_epoch = int(params['max_epoch']-1)
-        ckpt_path = os.path.join(ckpt_dir, "{:04d}".format(take_epoch), 'lin.pth.tar')
-    else:
+    # if epoch_num is not given then pick up the best epoch
+    if epoch_num is None:
         ckpt_path = os.path.join(ckpt_dir, 'lin.pth.tar')
+    else:
+        # with open(os.path.join(ckpt_dir, 'best_epoch')) as f:
+        #     best_epoch = int(f.read().strip())
+        best_epoch = epoch_num
+        ckpt_path = os.path.join(ckpt_dir, "{:04d}".format(best_epoch), 'lin.pth.tar')
 
     runner = Runner(ckpt_path, params)
     return runner
@@ -142,18 +143,18 @@ def parse_argument():
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--weight_decay', default=1e-6, type=float)
-    parser.add_argument('--max_epoch', default=2, type=int)
+    parser.add_argument('--max_epoch', default=800, type=int)
     parser.add_argument('--start_epoch', default=0, type=int)
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3hf")
+    parser.add_argument('--log_name', default="test_py3_hf")
 
     # smooth_level=1 will train HF for that smoothness level
     parser.add_argument('--smooth_level', default=1, type=int)
 
     # model specification.
-    parser.add_argument('--model_name', default="FcModified")
+    parser.add_argument('--model_name', default="FullyConnected")
     parser.add_argument('--num_layers', default=3)
     parser.add_argument('--hidden_size', default=1024)
 
@@ -182,22 +183,17 @@ def main():
         print("start training {} on {}".format(params['garment_class'], ss))
         trainer = HFTrainer(params)
 
-        # try:
-        if True:
-            for i in range(params['start_epoch'], params['max_epoch']):
-                print("epoch: {}".format(i))
-                trainer.train(i)
-                if i % 20 == 0:
-                    trainer.validate(i)
-                # if i % 20 == 0:
-                #     trainer.save_ckpt(i)
-            trainer.save_ckpt(params['max_epoch']-1)
+        for i in range(params['start_epoch'], params['max_epoch']):
+            print("epoch: {}".format(i))
+            trainer.train(i)
+            if i % 20 == 0:
+                trainer.validate(i)
+            # if i % 40 == 0:
+            #     trainer.save_ckpt(i)
 
-            # except Exception as e:
-        #     print(str(e))
-        # finally:
-            trainer.write_log()
-            print("safely quit!")
+        trainer.save_ckpt(params['max_epoch']-1)
+        trainer.write_log()
+        print("safely quit!")
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ def verts_dist(v1, v2, dim=None):
 def mask_thetas(thetas, garment_class):
     """
     thetas: shape [N, 72]
-    garment_class: e.g. smooth_TShirtNoCoat
+    garment_class: e.g. t-shirt
     """
     valid_theta = VALID_THETA[garment_class]
     mask = torch.zeros_like(thetas).view(-1, 24, 3)

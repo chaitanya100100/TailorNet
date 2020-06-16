@@ -17,7 +17,7 @@ from models import networks
 from models import ops
 from dataset.static_pose_shape_final import OneStyleShape
 import global_var
-import base_trainer
+from . import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")
@@ -35,7 +35,7 @@ class TestTrainer(base_trainer.Trainer):
             drop_last = True
         else:
             drop_last = False
-        dataloader = DataLoader(dataset, batch_size=self.bs, num_workers=6, shuffle=shuffle,
+        dataloader = DataLoader(dataset, batch_size=self.bs, num_workers=0, shuffle=shuffle,
                                 drop_last=drop_last)
         return dataset, dataloader
 
@@ -64,7 +64,7 @@ def parse_argument():
     parser.add_argument('--smooth_level', default=0, type=int)
 
     # model specification.
-    parser.add_argument('--model_name', default="FcModified")
+    parser.add_argument('--model_name', default="FullyConnected")
     parser.add_argument('--num_layers', default=3)
     parser.add_argument('--hidden_size', default=1024)
 

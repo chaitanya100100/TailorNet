@@ -31,7 +31,8 @@ SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
 
 # Root dir for smooth data. Groundtruth smooth data is stored in the same hierarchy under
 # this directory.
-SMOOTH_OUT_DIR = DATA_DIR
+SMOOTH_DATA_DIR = '/BS/cpatel/static00/tailor_data'
+# SMOOTH_DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
 # Indicates that smooth groundtruth data is available or not. If not available, smoothing
 # will be performed during the training which might slow down the training.
 SMOOTH_STORED = True
