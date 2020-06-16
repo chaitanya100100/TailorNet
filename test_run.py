@@ -19,7 +19,7 @@ def save_for_one_frame():
     from utils.rotation import normalize_y_rotation
     import numpy as np
     import os
-    from visualization.utils import get_shape, get_style, get_specific_pose
+    from visualization.vis_utils import get_shape, get_style, get_specific_pose
 
     garment_class = 't-shirt'
     gender = 'male'

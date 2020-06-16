@@ -31,8 +31,8 @@ SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
 
 # Root dir for smooth data. Groundtruth smooth data is stored in the same hierarchy under
 # this directory.
-SMOOTH_DATA_DIR = '/BS/cpatel/static00/tailor_data'
-# SMOOTH_DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
+# SMOOTH_DATA_DIR = '/BS/cpatel/static00/tailor_data'
+SMOOTH_DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
 # Indicates that smooth groundtruth data is available or not. If not available, smoothing
 # will be performed during the training which might slow down the training.
 SMOOTH_STORED = True
@@ -67,6 +67,7 @@ ID  parent  name
 """
 VALID_THETA = {
     't-shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19],
+    'old-t-shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19],
     'shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21],
     'pants': [0, 1, 2, 4, 5, 7, 8],
     'skirt' : [0, 1, 2, ],

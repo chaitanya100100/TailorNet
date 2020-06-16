@@ -8,7 +8,7 @@ import argparse
 import json
 import os
 import torch
-import base_trainer
+from trainer import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")

@@ -42,7 +42,7 @@ class OneStyleShape(Dataset):
         data_dir = os.path.join(global_var.DATA_DIR, '{}_{}'.format(garment_class, gender))
 
         beta = np.load(os.path.join(data_dir, 'shape/beta_{}.npy'.format(shape_idx)))
-        gamma = np.load(os.path.join(data_dir, 'style/gamma_{}.npy'.format(shape_idx)))
+        gamma = np.load(os.path.join(data_dir, 'style/gamma_{}.npy'.format(style_idx)))
 
         thetas = []
         pose_order = []
@@ -175,10 +175,15 @@ class MultiStyleShape(Dataset):
         data_dir = os.path.join(global_var.DATA_DIR, '{}_{}'.format(garment_class, gender))
         with open(os.path.join(data_dir, "pivots.txt"), "r") as f:
             train_pivots = [l.strip().split('_') for l in f.readlines()]
-        test_pivots = []
-        # print("USING FEW PIVOTS ONLY")
-        # train_pivots = train_pivots[:3]
-        # print(train_pivots)
+
+        test_ppath = os.path.join(data_dir, "test.txt")
+        if os.path.exists(test_ppath):
+            with open(test_ppath, "r") as f:
+                test_pivots = [l.strip().split('_') for l in f.readlines()]
+        else:
+            test_pivots = []
+        print(train_pivots)
+        print(test_pivots)
 
         single_sl = 0
         if self.smooth_level == 1 and global_var.SMOOTH_STORED:
@@ -230,7 +235,7 @@ class MultiStyleShape(Dataset):
 def visualize():
     from models.smpl4garment import SMPL4Garment
 
-    garment_class = 't-shirt'
+    garment_class = 'old-t-shirt'
     gender = 'female'
     split = None
     style_idx = '000'
@@ -257,8 +262,8 @@ def visualize():
 
         body_m, gar_m = smpl.run(theta=thetas.numpy(), beta=betas.numpy(), garment_class=garment_class,
                                  garment_d=verts.numpy())
-        body_m.write_ply("/BS/cpatel/work/body_{}.ply".format(idx))
-        gar_m.write_ply("/BS/cpatel/work/gar_{}.ply".format(idx))
+        # body_m.write_ply("/BS/cpatel/work/body_{}.ply".format(idx))
+        # gar_m.write_ply("/BS/cpatel/work/gar_{}.ply".format(idx))
 
         # _, gar_m = smpl.run(theta=thetas.numpy(), beta=betas.numpy(), garment_class=garment_class,
         #                     garment_d=sverts.numpy())
@@ -266,13 +271,13 @@ def visualize():
 
 
 def save_smooth():
-    garment_class = 't-shirt'
+    garment_class = 'old-t-shirt'
     gender = 'female'
     smooth_level = 1
     OUT_DIR = global_var.SMOOTH_DATA_DIR
 
     data_dir = os.path.join(global_var.DATA_DIR, '{}_{}'.format(garment_class, gender))
-    with open(os.path.join(data_dir, "pivots.txt"), "r") as f:
+    with open(os.path.join(data_dir, "test.txt"), "r") as f:
         train_pivots = [l.strip().split('_') for l in f.readlines()]
 
     with open(os.path.join(global_var.DATA_DIR, global_var.GAR_INFO_FILE), 'rb') as f:
@@ -322,6 +327,6 @@ def save_smooth():
 
 
 if __name__ == "__main__":
-    # visualize()
-    save_smooth()
+    visualize()
+    # save_smooth()
     pass

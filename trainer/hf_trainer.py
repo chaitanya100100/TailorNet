@@ -16,7 +16,7 @@ from models import networks
 from models import ops
 from dataset.static_pose_shape_final import OneStyleShapeHF
 import global_var
-import base_trainer
+from trainer import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")

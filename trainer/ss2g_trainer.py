@@ -14,7 +14,7 @@ import pickle
 from models import networks
 from dataset.canonical_pose_dataset import ShapeStyleCanonPose
 import global_var
-from . import base_trainer
+from trainer import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")

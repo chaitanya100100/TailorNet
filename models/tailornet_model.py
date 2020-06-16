@@ -86,11 +86,14 @@ class MixtureModeldirectLFmixtureHF(object):
         return pred_disp
 
 
-def get_best_runner(garment_class='t-shirt', gender='female'):
+def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf_logdir=None, ss2g_logdir=None):
 
-    lf_logdir = "/BS/cpatel/work/data/learn_anim/test_lf2/{}_{}/".format(garment_class, gender)
-    hf_logdir = "/BS/cpatel/work/data/learn_anim/test_hf2"
-    ss2g_logdir = "/BS/cpatel/work/data/learn_anim/test_ss2g/{}_{}".format(garment_class, gender)
+    if lf_logdir is None:
+        lf_logdir = "/BS/cpatel/work/data/learn_anim/test_lf2/{}_{}/".format(garment_class, gender)
+    if hf_logdir is None:
+        hf_logdir = "/BS/cpatel/work/data/learn_anim/test_hf2"
+    if ss2g_logdir is None:
+        ss2g_logdir = "/BS/cpatel/work/data/learn_anim/test_ss2g/{}_{}".format(garment_class, gender)
     runner = MixtureModeldirectLFmixtureHF(lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender)
     return runner
 
