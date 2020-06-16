@@ -1,3 +1,5 @@
+[Under Development]
+
 # TailorNet Training and Models
 This repository contains training code for "TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garment Style" (CVPR 2020 Oral)  
 
