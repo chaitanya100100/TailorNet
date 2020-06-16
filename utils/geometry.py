@@ -16,6 +16,7 @@ def get_face_normals(verts, faces):
     normals = normals / (torch.norm(normals, dim=-1, keepdim=True) + 1.e-10)
     return normals
 
+
 def get_vertex_normals(verts, faces, ret_face_normals=False):
     num_faces = faces.size(0)
     num_verts = verts.size(1)
@@ -167,6 +168,7 @@ def get_boundary_verts(verts, faces, connected_boundaries=True, connected_faces=
 
 
 def loop_subdivider(mesh_v, mesh_f):
+    """Copied from opendr and modified to work in python3."""
 
     IS = []
     JS = []
@@ -265,7 +267,10 @@ def get_vert_connectivity(mesh_v, mesh_f):
     """Returns a sparse matrix (of size #verts x #verts) where each nonzero
     element indicates a neighborhood relation. For example, if there is a
     nonzero element in position (15,12), that means vertex 15 is connected
-    by an edge to vertex 12."""
+    by an edge to vertex 12.
+
+    Copied from opendr library.
+    """
 
     vpv = sp.csc_matrix((len(mesh_v),len(mesh_v)))
 
@@ -285,7 +290,10 @@ def get_vertices_per_edge(mesh_v, mesh_f):
     """Returns an Ex2 array of adjacencies between vertices, where
     each element in the array is a vertex index. Each edge is included
     only once. If output of get_faces_per_edge is provided, this is used to
-    avoid call to get_vert_connectivity()"""
+    avoid call to get_vert_connectivity()
+
+    Copied from opendr library.
+    """
 
     vc = sp.coo_matrix(get_vert_connectivity(mesh_v, mesh_f))
     result = np.hstack((col(vc.row), col(vc.col)))
@@ -295,6 +303,7 @@ def get_vertices_per_edge(mesh_v, mesh_f):
 
 
 def get_faces_per_edge(mesh_v, mesh_f, verts_per_edge=None):
+    """Copied from opendr library."""
     if verts_per_edge is None:
         verts_per_edge = get_vertices_per_edge(mesh_v, mesh_f)
 
@@ -315,12 +324,14 @@ def get_faces_per_edge(mesh_v, mesh_f, verts_per_edge=None):
     return fpe
 
 
-
 def get_vert_opposites_per_edge(mesh_v, mesh_f):
     """Returns a dictionary from vertidx-pairs to opposites.
     For example, a key consist of [4,5)] meaning the edge between
     vertices 4 and 5, and a value might be [10,11] which are the indices
-    of the vertices opposing this edge."""
+    of the vertices opposing this edge.
+
+    Copied from opendr library.
+    """
     result = {}
     for f in mesh_f:
         for i in range(3):

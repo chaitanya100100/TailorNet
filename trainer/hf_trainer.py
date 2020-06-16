@@ -1,10 +1,4 @@
-"""
-Implements trainer class for TailorNet high frequency predictor.
-
-It overloads base_trainer.Trainer class.
-"""
 import os
-import tensorboardX
 import argparse
 import torch
 from torch.utils.data import DataLoader
@@ -23,6 +17,10 @@ device = torch.device("cuda:0")
 
 
 class HFTrainer(base_trainer.Trainer):
+    """Implements trainer class for TailorNet high frequency predictor.
+
+    It overloads some functions of base_trainer.Trainer class.
+    """
 
     def load_dataset(self, split):
         params = self.params
@@ -54,6 +52,8 @@ class HFTrainer(base_trainer.Trainer):
         gt_verts = gt_verts.to(device)
         smooth_verts = smooth_verts.to(device)
         thetas = thetas.to(device)
+
+        # predicts residual over smooth groundtruth.
         pred_verts = self.model(thetas).view(gt_verts.shape) + smooth_verts
 
         # L1 loss
@@ -67,7 +67,6 @@ class HFTrainer(base_trainer.Trainer):
         metrics['val_dist'].update(dist.item(), gt_verts.shape[0])
 
     def visualize_batch(self, inputs, outputs, epoch):
-        # visualize some predictions
         gt_verts, smooth_verts, thetas, betas, gammas, idxs = inputs
         new_inputs = (gt_verts, thetas, betas, gammas, idxs)
         super(HFTrainer, self).visualize_batch(new_inputs, outputs, epoch)

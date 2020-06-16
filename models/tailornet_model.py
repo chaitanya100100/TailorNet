@@ -9,7 +9,11 @@ from trainer.ss2g_trainer import get_best_runner as ss2g_runner
 from dataset.canonical_pose_dataset import ShapeStyleCanonPose
 
 
-class MixtureModeldirectLFmixtureHF(object):
+class TailorNetModel(object):
+    """Main TailorNet model class.
+    This class provides API for TailorNet prediction given trained models of low
+    frequency predictor, pivot high frequency predictors and ss2g predictor.
+    """
     def __init__(self, lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender):
         self.gender = gender
         self.garment_class = garment_class
@@ -87,18 +91,19 @@ class MixtureModeldirectLFmixtureHF(object):
 
 
 def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf_logdir=None, ss2g_logdir=None):
-
+    """Helper function to get TailorNet runner."""
     if lf_logdir is None:
         lf_logdir = "/BS/cpatel/work/data/learn_anim/test_lf2/{}_{}/".format(garment_class, gender)
     if hf_logdir is None:
         hf_logdir = "/BS/cpatel/work/data/learn_anim/test_hf2"
     if ss2g_logdir is None:
         ss2g_logdir = "/BS/cpatel/work/data/learn_anim/test_ss2g/{}_{}".format(garment_class, gender)
-    runner = MixtureModeldirectLFmixtureHF(lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender)
+    runner = TailorNetModel(lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender)
     return runner
 
 
 def evaluate():
+    """Evaluate TailorNet (or any model for that matter) on test set."""
     from dataset.static_pose_shape_final import MultiStyleShape
     from torch.utils.data import DataLoader
     from utils.eval import AverageMeter
@@ -108,7 +113,7 @@ def evaluate():
     garment_class = 't-shirt'
 
     dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
-    dataloader = DataLoader(dataset, batch_size=32, num_workers=6, shuffle=False)
+    dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False)
 
     val_dist = AverageMeter()
     runner = get_best_runner(garment_class, gender)
@@ -131,6 +136,7 @@ def evaluate():
             val_dist.update(dist.item(), gt_verts.shape[0])
             print(i, len(dataloader))
     print(val_dist.avg)
+
 
 if __name__ == '__main__':
     evaluate()

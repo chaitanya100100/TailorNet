@@ -1,13 +1,21 @@
 import numpy as np
 
+import scipy.sparse as sp
+from scipy.sparse import vstack, csr_matrix
+from scipy.sparse.linalg import spsolve
+from psbody.mesh import Mesh
+
 from psbody.mesh import Mesh
 from psbody.mesh.geometry.vert_normals import VertNormals
 from psbody.mesh.geometry.tri_normals import TriNormals
 from psbody.mesh.search import AabbTree
 from utils.diffusion_smoothing import numpy_laplacian_uniform as laplacian
 
-def get_nearest_points_and_normals(vert, base_verts, base_faces):
 
+def get_nearest_points_and_normals(vert, base_verts, base_faces):
+    """For each vertex of `vert`, find nearest surface points on
+    base mesh (`base_verts`, `base_faces`).
+    """
     fn = TriNormals(v=base_verts, f=base_faces).reshape((-1, 3))
     vn = VertNormals(v=base_verts, f=base_faces).reshape((-1, 3))
 
@@ -43,11 +51,10 @@ def get_nearest_points_and_normals(vert, base_verts, base_faces):
 
 
 def remove_interpenetration_fast(mesh, base, L=None):
-    """Deforms `mesh` to remove its interpenetration from `base`."""
-    import scipy.sparse as sp
-    from scipy.sparse import vstack, csr_matrix
-    from scipy.sparse.linalg import spsolve
-    from psbody.mesh import Mesh
+    """Deforms `mesh` to remove its interpenetration from `base`.
+    This is posed as least square optimization problem which can be solved
+    faster with sparse solver.
+    """
 
     eps = 0.001
     ww = 2.0

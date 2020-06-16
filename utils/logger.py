@@ -29,19 +29,6 @@ class BaseLogger(object):
                 writer.writerow(kwargs)
 
 
-class PSS2GLogger(BaseLogger):
-    def __init__(self, log_name='pss2g.csv'):
-        super(PSS2GLogger, self).__init__(log_name,
-            ['garment_class', 'model_name', 'note', 'best_error',
-             'best_epoch', 'time', 'batch_size', 'lr', 'log_name', 'checkpoint'])
-
-
-class PSS2GMixtureLogger(BaseLogger):
-    def __init__(self, log_name='pss2g_mixture.csv'):
-        super(PSS2GMixtureLogger, self).__init__(log_name,
-            ['garment_class', 'model_name', 'note', 'best_error', 'style_shape',
-             'best_epoch', 'time', 'batch_size', 'lr', 'log_name', 'checkpoint'])
-
 class TailorNetLogger(BaseLogger):
     def __init__(self, log_name='tailornet.csv'):
         super(TailorNetLogger, self).__init__(log_name,

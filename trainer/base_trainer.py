@@ -1,8 +1,3 @@
-"""
-Implements trainer class for TailorNet MLP baseline.
-
-It is also a base class for TailorNet LF and HF trainers.
-"""
 import os
 import tensorboardX
 import argparse
@@ -26,6 +21,10 @@ device = torch.device("cuda:0")
 
 
 class Trainer(object):
+    """Implements trainer class for TailorNet MLP baseline.
+    It is also a base class for TailorNet LF, HF and SS2G trainers.
+    """
+
     def __init__(self, params):
         self.params = params
         self.gender = params['gender']
@@ -57,12 +56,14 @@ class Trainer(object):
         self.garment_f_torch = torch.tensor(self.garment_f_np.astype(np.long)).long().to(device)
         self.vert_indices = class_info[self.garment_class]['vert_indices']
 
+        # get dataset and dataloader
         self.train_dataset, self.train_loader = self.load_dataset('train')
         self.test_dataset, self.test_loader = self.load_dataset('test')
         print("Train dataset size", len(self.train_dataset))
         print("Test dataset size", len(self.test_dataset))
-        self.model = self.build_model()
 
+        # model and optimizer
+        self.model = self.build_model()
         self.model.to(device)
         self.optimizer = torch.optim.Adam(
             self.model.parameters(), lr=params['lr'], weight_decay=params['weight_decay'])
@@ -108,6 +109,9 @@ class Trainer(object):
         return TailorNetLogger()
 
     def one_step(self, inputs):
+        """One forward pass.
+        Takes `inputs` tuple. Returns output(s) and loss.
+        """
         gt_verts, thetas, betas, gammas, _ = inputs
 
         thetas = ops.mask_thetas(thetas, self.garment_class)
@@ -140,13 +144,14 @@ class Trainer(object):
         self.logger.add_scalar("train_epoch/loss", epoch_loss.avg, epoch)
 
     def update_metrics(self, metrics, inputs, outputs):
+        """Update metrics from inputs and predicted outputs."""
         gt_verts = inputs[0]
         pred_verts = outputs
         dist = ops.verts_dist(gt_verts, pred_verts.cpu()) * 1000.
         metrics['val_dist'].update(dist.item(), gt_verts.shape[0])
 
     def visualize_batch(self, inputs, outputs, epoch):
-        # visualize some predictions
+        """Save visualizations of some samples of the batch."""
         gt_verts, thetas, betas, gammas, idxs = inputs
         pred_verts = outputs
         idxs = idxs.numpy()
@@ -198,11 +203,13 @@ class Trainer(object):
                 f.write("{:04d}".format(epoch))
 
     def write_log(self):
+        """Log training info once training is done."""
         if self.best_epoch >= 0:
             self.csv_logger.add_item(
                 best_error=self.best_error, best_epoch=self.best_epoch, **self.params)
 
     def save_ckpt(self, epoch):
+        """Save checkpoint in given epoch's directory."""
         save_dir = os.path.join(self.log_dir, "{:04d}".format(epoch))
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
@@ -210,6 +217,7 @@ class Trainer(object):
         torch.save(self.optimizer.state_dict(), os.path.join(save_dir, "optimizer.pth.tar"))
 
     def save_ckpt_best(self):
+        """Save checkpoint in log directory."""
         save_dir = self.log_dir
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)

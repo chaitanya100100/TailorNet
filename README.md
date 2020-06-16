@@ -5,6 +5,7 @@ This repository contains training code for "TailorNet: Predicting Clothing in 3D
 
 [[arxiv](https://arxiv.org/abs/2003.04583)]
 [[project website](https://virtualhumans.mpi-inf.mpg.de/tailornet/)]
+[[Dataset Repo](https://github.com/zycliao/TailorNet_dataset)]
 [[Youtube](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
 
 ## Requirements
@@ -15,9 +16,14 @@ opencv-python
 cython  
 [psbody.mesh](https://github.com/MPI-IS/mesh)
 
-## Data preparation
-Download and prepare TailorNet data from [here](https://github.com/zycliao/TailorNet_dataset).
+## How to Run
+- Download and prepare SMPL model and TailorNet data from [here](https://github.com/zycliao/TailorNet_dataset).
+- Set DATA_DIR and LOG_DIR variables in `global_var.py` file.
+- Download trained models from here. [Coming Soon]
+- Run TailorNet inference as `python run_tailornet.py`.
 
+## Training TailorNet yourself
+- Set appropriate global variables in `global_var.py`, especially LOG_DIR.
 
 ## Citation
 Cite us:
@@ -31,3 +37,6 @@ Cite us:
         year = {2020},
     }
 ```
+
+### Misc
+- `smpl_lib` follows MultiGarmentNet repo's [lib](https://github.com/bharat-b7/MultiGarmentNetwork/tree/master/lib).

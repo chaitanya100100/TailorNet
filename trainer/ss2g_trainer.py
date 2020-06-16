@@ -1,9 +1,3 @@
-"""
-Implements trainer class to predict deformations in canonical pose.
-
-It overloads base_trainer.Trainer class. This predictor is used in
-TailorNet to get the weights of pivot high frequency outputs.
-"""
 import os
 import argparse
 import torch
@@ -21,7 +15,12 @@ device = torch.device("cuda:0")
 
 
 class SS2GTrainer(base_trainer.Trainer):
+    """
+    Implements trainer class to predict deformations in canonical pose.
 
+    It overloads base_trainer.Trainer class. This predictor is used in
+    TailorNet to get the weights of pivot high frequency outputs.
+    """
     def load_dataset(self, split):
         params = self.params
         dataset = ShapeStyleCanonPose(self.garment_class, split=split, gender=self.gender)

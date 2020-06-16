@@ -1,9 +1,3 @@
-"""
-Implements trainer class for TailorNet low frequency predictor.
-
-LF predictor training is exactly same as MLP baseline training
-but one change: smooth_level is set to 1 for LF training.
-"""
 import argparse
 import json
 import os
@@ -15,6 +9,13 @@ device = torch.device("cuda:0")
 
 
 class LFTrainer(base_trainer.Trainer):
+    """
+    Implements trainer class for TailorNet low frequency predictor.
+
+    LF predictor training is exactly same as MLP baseline training
+    but one change: smooth_level is set to 1 in config parameters
+    to get low frequency GT data.
+    """
     pass
 
 

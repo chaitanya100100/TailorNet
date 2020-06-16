@@ -7,7 +7,28 @@ import global_var
 from utils.rotation import get_Apose
 
 
+def get_style(style_idx, gender, garment_class):
+    gammas = np.load(os.path.join(
+        global_var.DATA_DIR,
+        '{}_{}/style/gamma_{}.npy'.format(garment_class, gender, style_idx)
+    )).astype(np.float32)
+    return gammas
+
+
+def get_shape(shape_idx, gender, garment_class):
+    betas = np.load(os.path.join(
+        global_var.DATA_DIR,
+        '{}_{}/shape/beta_{}.npy'.format(garment_class, gender, shape_idx)
+    )).astype(np.float32)
+    return betas[:10]
+
+
 class ShapeStyleCanonPose(Dataset):
+    """Dataset for garments in canonical pose.
+
+    This dataset is used to train ss2g(shape-style to garment) model which is used
+    is weighing of pivot high frequency outputs.
+    """
     def __init__(self, garment_class, gender, shape_style_list_path='avail.txt', split=None):
         super(ShapeStyleCanonPose, self).__init__()
         self.garment_class = garment_class
@@ -21,10 +42,12 @@ class ShapeStyleCanonPose(Dataset):
             ss_list = [l.strip().split('_') for l in f.readlines()]
 
         assert(split in [None, 'train', 'test'])
+        with open(os.path.join(root_dir, "test.txt"), "r") as f:
+            test_ss = [l.strip().split('_') for l in f.readlines()]
         if split == 'train':
-            ss_list = ss_list[:-20]
+            ss_list = [ss for ss in ss_list if ss not in test_ss]
         elif split == 'test':
-            ss_list = ss_list[-20:]
+            ss_list = [ss for ss in ss_list if ss in test_ss]
 
         unpose_v = []
         for shape_idx, style_idx in ss_list:
@@ -53,7 +76,7 @@ class ShapeStyleCanonPose(Dataset):
 if __name__ == '__main__':
     gender = 'male'
     garment_class = 't-shirt'
-    ds = ShapeStyleCanonPose(gender=gender, garment_class=garment_class)
-    for i in range(len(ds)):
-        bla = ds[i]
-        print(i)
+    ds = ShapeStyleCanonPose(gender=gender, garment_class=garment_class, split='train')
+    print(len(ds))
+    ds = ShapeStyleCanonPose(gender=gender, garment_class=garment_class, split='test')
+    print(len(ds))

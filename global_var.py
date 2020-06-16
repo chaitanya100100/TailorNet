@@ -2,20 +2,20 @@ import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Dataset root directory. Change it to point to downloaded data root directory
+# Dataset root directory. Change it to point to downloaded data root directory.
 DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
 
-# Log directory where training logs and checkpoints will be stored
+# Log directory where training logs, checkpoints and visualizations will be stored
 LOG_DIR = '/BS/cpatel/work/data/learn_anim'
 
 # Available genders
 GENDERS = ['neutral', 'male', 'female']
 
-# This file contains pose indices (out of all SMPL poses) of train/test splits
-# as a dict {'train': <train_indices>, 'test': <test_indices>}
+# This file in DATA_DIR contains pose indices (out of all SMPL poses) of
+# train/test splits as a dict {'train': <train_indices>, 'test': <test_indices>}
 POSE_SPLIT_FILE = 'split_static_pose_shape.npz'
 
-# This file contains garment template information in format
+# This file in DATA_DIR contains garment template information in format
 # { <garment_class>: {'vert_indices': <vert_indices>, 'f': <faces>} }
 # where <vert_indices> refers to the indices of high_resolution SMPL
 # template which make <garment_class> garment
@@ -26,15 +26,14 @@ SMPL_PATH_NEUTRAL = '/BS/RVH/work/data/smpl_models/neutral/basicModel_neutral_lb
 SMPL_PATH_MALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/male/model.pkl'
 SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/female/model.pkl'
 
-# Skirt template path
-SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
+# # Skirt template path
+# SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
 
-# Root dir for smooth data. Groundtruth smooth data is stored in the same hierarchy under
-# this directory.
-# SMOOTH_DATA_DIR = '/BS/cpatel/static00/tailor_data'
-SMOOTH_DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
-# Indicates that smooth groundtruth data is available or not. If not available, smoothing
-# will be performed during the training which might slow down the training.
+# Root dir for smooth data. Groundtruth smooth data is stored in the same
+# data hierarchy as simulation data under this directory.
+SMOOTH_DATA_DIR = DATA_DIR
+# Indicates that smooth groundtruth data is available or not. If False, smoothing
+# will be performed during the training which might slow down the training significantly.
 SMOOTH_STORED = True
 
 """
@@ -65,6 +64,8 @@ ID  parent  name
 22  20      L hand
 23  21      R hand
 """
+
+# Lists the indices of joints which affect the deformations of particular garment
 VALID_THETA = {
     't-shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19],
     'old-t-shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19],

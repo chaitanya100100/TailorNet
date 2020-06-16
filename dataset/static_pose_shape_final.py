@@ -8,13 +8,17 @@ import global_var
 from utils.diffusion_smoothing import DiffusionSmoothing
 from models.torch_smpl4garment import TorchSMPL4Garment
 
+
+# Smoothing levels can be defined here.
+# smooth level 0 is not smoothing.
+# smooth level 1 is smoothing with 0.15 smoothness for 80 iterations.
 level_smoothness = [0, 0.15]
 level_smoothiter = [0, 80]
 Ltype = "uniform"
 
 
 def smooth_it(smoothing, smooth_level, smpl, thetas, betas, verts, garment_class):
-
+    """Smoothing function used only when smoothing is done during training time."""
     if smooth_level == -1:
         verts = torch.zeros_like(verts)
     elif smooth_level != 0:
@@ -30,7 +34,7 @@ def smooth_it(smoothing, smooth_level, smpl, thetas, betas, verts, garment_class
 
 
 class OneStyleShape(Dataset):
-
+    """Dataset for single pivot style-shape."""
     def __init__(self, garment_class, shape_idx, style_idx, split, gender='female', smooth_level=0):
         super(OneStyleShape, self).__init__()
 
@@ -43,6 +47,8 @@ class OneStyleShape(Dataset):
 
         beta = np.load(os.path.join(data_dir, 'shape/beta_{}.npy'.format(shape_idx)))
         gamma = np.load(os.path.join(data_dir, 'style/gamma_{}.npy'.format(style_idx)))
+        # I had a hard time figuring out the bug in the following line:
+        # gamma = np.load(os.path.join(data_dir, 'style/gamma_{}.npy'.format(shape_idx)))
 
         thetas = []
         pose_order = []
@@ -128,6 +134,9 @@ class OneStyleShape(Dataset):
 
 
 class OneStyleShapeHF(OneStyleShape):
+    """Dataset for single style-shape which returns GT and smooth garment displacements both.
+    It is used to train pivot high frequency predictors.
+    """
     def __init__(self, garment_class, shape_idx, style_idx, split, gender='female', smooth_level=0, smpl=None):
         super(OneStyleShapeHF, self).__init__(garment_class, shape_idx, style_idx, split, gender=gender,
                                               smooth_level=smooth_level)
@@ -141,6 +150,9 @@ class OneStyleShapeHF(OneStyleShape):
 
 
 class MultiStyleShape(Dataset):
+    """Entire dataset for a gender and garment style.
+    It creates single style-shape datasets for all pivots and then concate them.
+    """
     def __init__(self, garment_class, split=None, gender='female', smooth_level=0, smpl=None):
         super(MultiStyleShape, self).__init__()
 
@@ -271,6 +283,7 @@ def visualize():
 
 
 def save_smooth():
+    """Helper function to save smooth garment displacements."""
     garment_class = 'old-t-shirt'
     gender = 'female'
     smooth_level = 1

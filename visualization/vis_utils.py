@@ -40,7 +40,7 @@ def get_specific_pose(which):
     return thetas[which]
 
 
-def get_specific_style(which):
+def get_specific_style_old_tshirt(which):
     g = np.array([1.5, 0.5, 1.5, 0.0], dtype=np.float32)
     if which == 'mean':
         return g
@@ -53,13 +53,13 @@ def get_specific_style(which):
     elif which == 'longsleeve':
         g[1] = 1.5
     elif which == 'small_shortsleeve':
-        g = get_specific_style('small') + get_specific_style('shortsleeve') - g
+        g = get_specific_style_old_tshirt('small') + get_specific_style_old_tshirt('shortsleeve') - g
     elif which == 'small_longsleeve':
-        g = get_specific_style('small') + get_specific_style('longsleeve') - g
+        g = get_specific_style_old_tshirt('small') + get_specific_style_old_tshirt('longsleeve') - g
     elif which == 'big_shortsleeve':
-        g = get_specific_style('big') + get_specific_style('shortsleeve') - g
+        g = get_specific_style_old_tshirt('big') + get_specific_style_old_tshirt('shortsleeve') - g
     elif which == 'big_longsleeve':
-        g = get_specific_style('big') + get_specific_style('longsleeve') - g
+        g = get_specific_style_old_tshirt('big') + get_specific_style_old_tshirt('longsleeve') - g
     else:
         raise AttributeError
     return g

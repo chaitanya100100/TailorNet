@@ -7,7 +7,9 @@ from utils.smpl_paths import SmplPaths
 
 import global_var
 
+
 class SMPL4Garment(object):
+    """SMPL class for garments."""
     def __init__(self, gender):
         self.gender = gender
         smpl_model = SmplPaths(gender=gender).get_hres_smpl_model_data()
@@ -17,6 +19,7 @@ class SMPL4Garment(object):
         # self.skirt = Mesh(filename=global_var.SKIRT_TEMPLATE)
 
     def run(self, beta=None, theta=None, garment_d=None, garment_class=None):
+        """Outputs body and garment of specified garment class given theta, beta and displacements."""
         if beta is not None:
             self.smpl_base.betas[:beta.shape[0]] = beta
         else:
