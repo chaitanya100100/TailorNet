@@ -18,10 +18,10 @@ scipy
 [psbody.mesh](https://github.com/MPI-IS/mesh)
 
 ## How to Run
-- Download and prepare SMPL model and TailorNet data from [here](https://github.com/zycliao/TailorNet_dataset).
+- Download and prepare SMPL model and TailorNet data from [dataset repository](https://github.com/zycliao/TailorNet_dataset).
 - Set DATA_DIR and SMPL paths in `global_var.py` file accordingly.
-- Download trained models' weights. Unzip it and set paths of downloaded models to `LF_MODEL_PATH`, `HF_MODEL_PATH` and
-`SS2G_MODEL_PATH` variables in `global_var.py`.
+- Download trained models' weights and unzip it. Set paths of `LF_MODEL_PATH`, `HF_MODEL_PATH` and
+`SS2G_MODEL_PATH` variables in `global_var.py` accordingly.
   - [old-t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/old-t-shirt_female_weights.zip)
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
@@ -52,19 +52,19 @@ weights_folder
 ----------------params.json
 
 ```
-Then you won't need to change model checkpoint paths for multiple garments.
+and then you won't need to change model checkpoint paths while dealing with multiple garments.
 
 
 ## Training TailorNet yourself
 - Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.
-- Set config variables in `trainer/base_trainer.py` and run `python trainer/base_trainer.py` to train
-TailorNet MLP baseline.
-- Similarly, run `trainer/lf_trainer.py` for training low frequency predictor and `trainer/ss2g_trainer.py` for
-shape-style-to-garment(in canonical pose) model.
+- Set config variables like gender and garment class in `trainer/base_trainer.py` (or pass them via command line)
+and run `python trainer/base_trainer.py` to train TailorNet MLP baseline.
+- Similarly, run `python trainer/lf_trainer.py` to train low frequency predictor and `trainer/ss2g_trainer.py` to
+train shape-style-to-garment(in canonical pose) model.
 - Run `python trainer/hf_trainer.py --shape_style <shape1>_<style1> <shape2>_<style2> ...` to train pivot high 
 frequency predictors for pivots `<shape1>_<style1>`, `<shape2>_<style2>`, and so on. See 
 `DATA_DIR/<garment_class>_<gender>/pivots.txt` to know available pivots.
-- Use `models.tailornet_model.TailorNetModel` to do prediction.
+- Use `models.tailornet_model.TailorNetModel` with appropriate logdir arguments to do prediction.
 
 ## Citation
 Cite us if you use our model, code or data:
@@ -80,6 +80,6 @@ Cite us if you use our model, code or data:
 ```
 
 ### Misc
-- `smpl_lib` follows MultiGarmentNet repo's [lib](https://github.com/bharat-b7/MultiGarmentNetwork/tree/master/lib).
-Thanks Bharat for that.
-- Thanks to Garvita for helping out during data generation procedure.
+- Thanks to Bharat for many fruitful discussions and for `smpl_lib` library taken from his MultiGarmentNet 
+repo's [lib](https://github.com/bharat-b7/MultiGarmentNetwork/tree/master/lib) folder.
+- Thanks to Garvita for helping out during the onerous procedure of data generation.

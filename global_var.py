@@ -19,7 +19,7 @@ HF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_hf"
 SS2G_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_ss2g"
 
 # --------------------------------------------------------------------
-# Variable below hardly need to be changed
+# Variable below hardly need to change
 # --------------------------------------------------------------------
 
 # Available genders
