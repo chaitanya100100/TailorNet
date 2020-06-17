@@ -28,11 +28,11 @@ def get_single_frame_inputs(garment_class, gender):
         get_specific_shape('somefat'),
     ]
     gammas = [
-        get_style('000', garment_class=garment_class, gender=gender),
-        get_style('001', garment_class=garment_class, gender=gender),
-        get_style('002', garment_class=garment_class, gender=gender),
-        get_style('003', garment_class=garment_class, gender=gender),
-        get_style('004', garment_class=garment_class, gender=gender),
+        get_specific_style_old_tshirt('mean'),
+        get_specific_style_old_tshirt('big'),
+        get_specific_style_old_tshirt('small'),
+        get_specific_style_old_tshirt('shortsleeve'),
+        get_specific_style_old_tshirt('big_shortsleeve'),
     ]
     thetas = [
         get_specific_pose(0),
