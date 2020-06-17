@@ -33,7 +33,7 @@ class TailorNetModel(object):
         self.train_pivots = pivots_ds.ss_list
 
         self.hf_runners = [
-            hf_runner("{}/{}_{}/{}_{}".format(hf_logdir, garment_class, gender, shape_idx, style_idx))
+            hf_runner("{}/{}_{}".format(hf_logdir, shape_idx, style_idx))
             for shape_idx, style_idx in self.train_pivots
         ]
         self.lf_runner = lf_runner(lf_logdir)
@@ -92,13 +92,13 @@ class TailorNetModel(object):
 
 def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf_logdir=None, ss2g_logdir=None):
     """Helper function to get TailorNet runner."""
-    prefix = "tn_orig"
-    if lf_logdir is None:
-        lf_logdir = "/BS/cpatel/work/data/learn_anim/{}_lf/{}_{}/".format(prefix, garment_class, gender)
-    if hf_logdir is None:
-        hf_logdir = "/BS/cpatel/work/data/learn_anim/{}_hf".format(prefix)
-    if ss2g_logdir is None:
-        ss2g_logdir = "/BS/cpatel/work/data/learn_anim/{}_ss2g/{}_{}".format(prefix, garment_class, gender)
+    lf_logdir = global_var.LF_MODEL_PATH if lf_logdir is None else lf_logdir
+    hf_logdir = global_var.HF_MODEL_PATH if hf_logdir is None else hf_logdir
+    ss2g_logdir = global_var.SS2G_MODEL_PATH if ss2g_logdir is None else ss2g_logdir
+
+    lf_logdir = os.path.join(lf_logdir, "{}_{}".format(garment_class, gender))
+    hf_logdir = os.path.join(hf_logdir, "{}_{}".format(garment_class, gender))
+    ss2g_logdir = os.path.join(ss2g_logdir, "{}_{}".format(garment_class, gender))
     runner = TailorNetModel(lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender)
     return runner
 
@@ -113,7 +113,7 @@ def evaluate():
     gender = 'female'
     garment_class = 'old-t-shirt'
 
-    dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='train_test')
+    dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
     dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False, drop_last=False)
     print(len(dataset))
 

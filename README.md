@@ -1,8 +1,10 @@
-[Under Development]
-
-# TailorNet Training and Models
-This repository contains training code for "TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garment Style" (CVPR 2020 Oral)  
-
+# TailorNet
+This repository contains training and inference code for the following paper: 
+```
+TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garment Style  
+Chaitanya Patel*, Zhouyingcheng Liao*, Gerard Pons-Moll  
+CVPR 2020 (ORAL)  
+```
 [[arxiv](https://arxiv.org/abs/2003.04583)]
 [[project website](https://virtualhumans.mpi-inf.mpg.de/tailornet/)]
 [[Dataset Repo](https://github.com/zycliao/TailorNet_dataset)]
@@ -17,25 +19,55 @@ scipy
 
 ## How to Run
 - Download and prepare SMPL model and TailorNet data from [here](https://github.com/zycliao/TailorNet_dataset).
-- Set DATA_DIR variable in `global_var.py` file.
-- Download trained models from here. [Coming Soon]
+- Set DATA_DIR and SMPL paths in `global_var.py` file accordingly.
+- Download trained models' weights. Unzip it and set paths of downloaded models to `LF_MODEL_PATH`, `HF_MODEL_PATH` and
+`SS2G_MODEL_PATH` variables in `global_var.py`.
+  - [old-t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/old-t-shirt_female_weights.zip)
+  - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
-- To visualize predicted garment using blender, run `python run_tailornet.py render`. (blender needs to be installed.)
+- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender needs to be installed.)
+
+
+#### If you download trained model weights for multiple garments...
+... then you can merge downloaded weights directories to follow a directory structure similar to the following.
+```
+weights_folder
+----tn_orig_baseline
+--------{garment_class}_{gender}  (e.g. t-shirt_female)
+------------lin.pth.tar  (model weights)
+------------params.json  (some model params)
+----tn_orig_lf
+--------{garment_class}_{gender}
+------------lin.pth.tar
+------------params.json
+----tn_orig_ss2g
+--------{garment_class}_{gender}
+------------lin.pth.tar
+------------params.json
+----tn_orig_hf
+--------{garment_class}_{gender}
+------------{shape_idx}_{style_idx}  (e.g. 000_023 pivot)
+----------------lin.pth.tar
+----------------params.json
+
+```
+Then you won't need to change model checkpoint paths for multiple garments.
+
 
 ## Training TailorNet yourself
-- Set appropriate global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.
-- Set appropriate config variables in `trainer/base_trainer.py` and run `python trainer/base_trainer.py` to train
-simple MLP baseline.
+- Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.
+- Set config variables in `trainer/base_trainer.py` and run `python trainer/base_trainer.py` to train
+TailorNet MLP baseline.
 - Similarly, run `trainer/lf_trainer.py` for training low frequency predictor and `trainer/ss2g_trainer.py` for
 shape-style-to-garment(in canonical pose) model.
-- Run `python trainer/hf_trainer.py --shape_style <shape1>_<style1> <shape2>_<style2>` to train pivot high frequency
-predictors for pivots `<shape1>_<style1>` and `<shape2>_<style2>`. See `DATA_DIR/<garment_class>_<gender>/pivots.txt`
-to know available pivots.
+- Run `python trainer/hf_trainer.py --shape_style <shape1>_<style1> <shape2>_<style2> ...` to train pivot high 
+frequency predictors for pivots `<shape1>_<style1>`, `<shape2>_<style2>`, and so on. See 
+`DATA_DIR/<garment_class>_<gender>/pivots.txt` to know available pivots.
 - Use `models.tailornet_model.TailorNetModel` to do prediction.
 
 ## Citation
-Cite us:
+Cite us if you use our model, code or data:
 ```
 @inproceedings{patel20tailornet,
         title = {TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garment Style},

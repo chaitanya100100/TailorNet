@@ -5,8 +5,22 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Dataset root directory. Change it to point to downloaded data root directory.
 DATA_DIR = '/BS/cloth-anim/static00/tailor_data'
 
+# Set the paths to SMPL model
+SMPL_PATH_NEUTRAL = '/BS/RVH/work/data/smpl_models/neutral/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl'
+SMPL_PATH_MALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/male/model.pkl'
+SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/female/model.pkl'
+
 # Log directory where training logs, checkpoints and visualizations will be stored
 LOG_DIR = '/BS/cpatel/work/data/learn_anim'
+
+# TailorNet trained models path
+LF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_lf"
+HF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_hf"
+SS2G_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_ss2g"
+
+# --------------------------------------------------------------------
+# Variable below hardly need to be changed
+# --------------------------------------------------------------------
 
 # Available genders
 GENDERS = ['neutral', 'male', 'female']
@@ -20,11 +34,6 @@ POSE_SPLIT_FILE = 'split_static_pose_shape.npz'
 # where <vert_indices> refers to the indices of high_resolution SMPL
 # template which make <garment_class> garment
 GAR_INFO_FILE = 'garment_class_info.pkl'
-
-# Set the paths to SMPL model
-SMPL_PATH_NEUTRAL = '/BS/RVH/work/data/smpl_models/neutral/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl'
-SMPL_PATH_MALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/male/model.pkl'
-SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed_normalized/female/model.pkl'
 
 # # Skirt template path
 # SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
