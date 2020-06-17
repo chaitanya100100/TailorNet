@@ -91,10 +91,23 @@ class OneStyleShape(Dataset):
 
         if split is not None:
             assert(split in ['test', 'train'])
+            # SMPL has 1782 poses. We set aside 350 poses as test set and remaining in train set. So if a frame has a
+            # pose from these 1782 poses, it's easy to classify them as train or test.
+            # But during simulation of these poses, we add some intermediate poses for simulation stability.
+            # To classify these intermediate poses in test and train split, we follow this policy:
+            # - For train pivots, intermediate poses go into train set because there are significant amount of
+            #   intermediate poses and we can't afford to give them away during training.
+            # - For test pivots, we add intermediate poses to test set. Assuming that intermediate poses are randomly
+            #   distributed, it's fair to assume that any intermediate test pose will be unseen from training.
             split_file_path = os.path.join(global_var.DATA_DIR, global_var.POSE_SPLIT_FILE)
-            test_orig_idx = np.load(split_file_path)['test']
-            test_idx = np.in1d(pose_order, test_orig_idx)
-            chosen_idx = np.where(test_idx)[0] if split == 'test' else np.where(~test_idx)[0]
+            if seq_idx > 1:  # train pivot
+                test_orig_idx = np.load(split_file_path)['test']
+                test_idx = np.in1d(pose_order, test_orig_idx)
+                chosen_idx = np.where(test_idx)[0] if split == 'test' else np.where(~test_idx)[0]
+            else:  # test pivot
+                train_orig_idx = np.load(split_file_path)['train']
+                train_idx = np.in1d(pose_order, train_orig_idx)
+                chosen_idx = np.where(train_idx)[0] if split == 'train' else np.where(~train_idx)[0]
 
             thetas = thetas[chosen_idx]
             verts_d = verts_d[chosen_idx]
@@ -193,20 +206,18 @@ class MultiStyleShape(Dataset):
             with open(test_ppath, "r") as f:
                 test_pivots = [l.strip().split('_') for l in f.readlines()]
         else:
+            print("Test pivots not available.")
             test_pivots = []
-        print(train_pivots)
-        print(test_pivots)
 
         single_sl = 0
         if self.smooth_level == 1 and global_var.SMOOTH_STORED:
             single_sl = 1
 
-        # self.pivots = train_pivots + test_pivots
         one_style_shape_datasets = []
         eval_split = True if split in ['train_train', 'train_test',
                                        'test_train', 'test_test'] else False
 
-        assert eval_split is False, "Splits not done yet"
+        assert test_pivots or not eval_split, "Test split not available yet"
 
         if not eval_split:
             for shi, sti in train_pivots:
@@ -216,7 +227,7 @@ class MultiStyleShape(Dataset):
             for shi, sti in test_pivots:
                 if split == 'train': continue
                 one_style_shape_datasets.append(
-                    OneStyleShape(garment_class, shape_idx=shi, style_idx=sti, split=split, gender=gender,
+                    OneStyleShape(garment_class, shape_idx=shi, style_idx=sti, split=None, gender=gender,
                                   smooth_level=single_sl))
         else:
             pose_split, shape_split = split.split('_')

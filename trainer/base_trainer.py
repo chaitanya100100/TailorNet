@@ -300,7 +300,7 @@ def parse_argument():
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3_baseline")
+    parser.add_argument('--log_name', default="tn_baseline")
 
     # smooth_level=0 will train TailorNet MLP baseline
     parser.add_argument('--smooth_level', default=0, type=int)

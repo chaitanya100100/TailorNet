@@ -41,7 +41,7 @@ def parse_argument():
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3_lf")
+    parser.add_argument('--log_name', default="tn_lf")
 
     # smooth_level=1 will train TailorNet low frequency predictor
     parser.add_argument('--smooth_level', default=1, type=int)

@@ -92,12 +92,13 @@ class TailorNetModel(object):
 
 def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf_logdir=None, ss2g_logdir=None):
     """Helper function to get TailorNet runner."""
+    prefix = "tn_orig"
     if lf_logdir is None:
-        lf_logdir = "/BS/cpatel/work/data/learn_anim/test_lf2/{}_{}/".format(garment_class, gender)
+        lf_logdir = "/BS/cpatel/work/data/learn_anim/{}_lf/{}_{}/".format(prefix, garment_class, gender)
     if hf_logdir is None:
-        hf_logdir = "/BS/cpatel/work/data/learn_anim/test_hf2"
+        hf_logdir = "/BS/cpatel/work/data/learn_anim/{}_hf".format(prefix)
     if ss2g_logdir is None:
-        ss2g_logdir = "/BS/cpatel/work/data/learn_anim/test_ss2g/{}_{}".format(garment_class, gender)
+        ss2g_logdir = "/BS/cpatel/work/data/learn_anim/{}_ss2g/{}_{}".format(prefix, garment_class, gender)
     runner = TailorNetModel(lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender)
     return runner
 
@@ -109,16 +110,17 @@ def evaluate():
     from utils.eval import AverageMeter
     from models import ops
 
-    gender = 'male'
-    garment_class = 't-shirt'
+    gender = 'female'
+    garment_class = 'old-t-shirt'
 
-    dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
-    dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False)
+    dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='train_test')
+    dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False, drop_last=False)
+    print(len(dataset))
 
     val_dist = AverageMeter()
     runner = get_best_runner(garment_class, gender)
-    # from trainer.base_trainer import get_best_runner
-    # runner = get_best_runner("/BS/cpatel/work/data/learn_anim/test_mlp_baseline2/{}_{}/".format(garment_class, gender))
+    # from trainer.base_trainer import get_best_runner as baseline_runner
+    # runner = baseline_runner("/BS/cpatel/work/data/learn_anim/tn_baseline/{}_{}".format(garment_class, gender))
 
     device = torch.device('cuda:0')
     with torch.no_grad():

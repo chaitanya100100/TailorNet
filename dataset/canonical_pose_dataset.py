@@ -35,8 +35,10 @@ class ShapeStyleCanonPose(Dataset):
         self.gender = gender
         root_dir = os.path.join(global_var.DATA_DIR, '{}_{}'.format(garment_class, gender))
 
-        betas = np.load(os.path.join(root_dir, 'shape/betas.npy'))[:, :10]
-        gammas = np.load(os.path.join(root_dir, 'style/gammas.npy'))
+        # betas = np.load(os.path.join(root_dir, 'shape/betas.npy'))[:, :10]
+        betas = np.stack([np.load(os.path.join(root_dir, 'shape/beta_{:03d}.npy'.format(i))) for i in range(9)]).astype(np.float32)[:, :10]
+        # gammas = np.load(os.path.join(root_dir, 'style/gammas.npy'))
+        gammas = np.stack([np.load(os.path.join(root_dir, 'style/gamma_{:03d}.npy'.format(i))) for i in range(26)]).astype(np.float32)
 
         with open(os.path.join(root_dir, shape_style_list_path), "r") as f:
             ss_list = [l.strip().split('_') for l in f.readlines()]

@@ -33,6 +33,7 @@ def get_specific_shape(which):
 
 def get_specific_pose(which):
     """
+    `which` index can be 0, 1, 2, ..., 10
     0 - apose
     """
     thetas = np.load('./visualization/some_thetas.npy')

@@ -147,7 +147,7 @@ def parse_argument():
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3_hf")
+    parser.add_argument('--log_name', default="tn_hf")
 
     # smooth_level=1 will train HF for that smoothness level
     parser.add_argument('--smooth_level', default=1, type=int)

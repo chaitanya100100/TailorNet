@@ -54,6 +54,11 @@ class SS2GTrainer(base_trainer.Trainer):
         data_loss = (pred_verts - gt_verts).abs().sum(-1).mean()
         return pred_verts, data_loss
 
+    def visualize_batch(self, inputs, outputs, epoch):
+        # This is easy training so no need to visualize here
+        return
+
+
 
 class Runner(object):
     """A helper class to load a trained model."""
@@ -124,12 +129,12 @@ def parse_argument():
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--lr', default=1e-3, type=float)
     parser.add_argument('--weight_decay', default=1e-5, type=float)
-    parser.add_argument('--max_epoch', default=10, type=int)
+    parser.add_argument('--max_epoch', default=400, type=int)
     parser.add_argument('--start_epoch', default=0, type=int)
     parser.add_argument('--checkpoint', default="")
 
     # name under which experiment will be logged
-    parser.add_argument('--log_name', default="test_py3ss2g")
+    parser.add_argument('--log_name', default="tn_ss2g")
 
     # smooth_level=0 will train TailorNet MLP baseline
     parser.add_argument('--smooth_level', default=0, type=int)

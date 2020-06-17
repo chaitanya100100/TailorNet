@@ -11,19 +11,28 @@ This repository contains training code for "TailorNet: Predicting Clothing in 3D
 ## Requirements
 python3  
 pytorch  
+scipy  
 [chumpy](https://github.com/mattloper/chumpy)  
-opencv-python  
-cython  
 [psbody.mesh](https://github.com/MPI-IS/mesh)
 
 ## How to Run
 - Download and prepare SMPL model and TailorNet data from [here](https://github.com/zycliao/TailorNet_dataset).
-- Set DATA_DIR and LOG_DIR variables in `global_var.py` file.
+- Set DATA_DIR variable in `global_var.py` file.
 - Download trained models from here. [Coming Soon]
-- Run TailorNet inference as `python run_tailornet.py`.
+- Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
+  different inputs. You can also run inference on motion sequence data.
+- To visualize predicted garment using blender, run `python run_tailornet.py render`. (blender needs to be installed.)
 
 ## Training TailorNet yourself
-- Set appropriate global variables in `global_var.py`, especially LOG_DIR.
+- Set appropriate global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.
+- Set appropriate config variables in `trainer/base_trainer.py` and run `python trainer/base_trainer.py` to train
+simple MLP baseline.
+- Similarly, run `trainer/lf_trainer.py` for training low frequency predictor and `trainer/ss2g_trainer.py` for
+shape-style-to-garment(in canonical pose) model.
+- Run `python trainer/hf_trainer.py --shape_style <shape1>_<style1> <shape2>_<style2>` to train pivot high frequency
+predictors for pivots `<shape1>_<style1>` and `<shape2>_<style2>`. See `DATA_DIR/<garment_class>_<gender>/pivots.txt`
+to know available pivots.
+- Use `models.tailornet_model.TailorNetModel` to do prediction.
 
 ## Citation
 Cite us:
@@ -40,3 +49,5 @@ Cite us:
 
 ### Misc
 - `smpl_lib` follows MultiGarmentNet repo's [lib](https://github.com/bharat-b7/MultiGarmentNetwork/tree/master/lib).
+Thanks Bharat for that.
+- Thanks to Garvita for helping out during data generation procedure.

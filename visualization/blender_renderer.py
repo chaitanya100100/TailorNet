@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
 import numpy as np
+import os
+import copy
+
+BLEND_FILE = "./visualization/scene.blend"
 
 def blender_render(meshes_path, tex_num, outpath):
     import bpy
-
-    tex_paths = ["body", "shirt"]
 
     scene = bpy.context.scene
     # scene.render.engine = 'CYCLES'
@@ -59,12 +61,6 @@ def blender_render(meshes_path, tex_num, outpath):
         objs.remove(objs[nm], do_unlink=True)
 
 
-def blender_render_all(meshes_path_all, tex_num_all, outpath):
-    import os
-    for fn, (meshes_path, tex_num) in enumerate(zip(meshes_path_all, tex_num_all)):
-        blender_render(meshes_path, tex_num, os.path.join(outpath, "img_{:04d}.png".format(fn))) 
-
-
 def get_rotmat(side):
     from scipy.spatial.transform import Rotation as R
     if side == 'front':
@@ -77,53 +73,36 @@ def get_rotmat(side):
     return s.as_dcm()
 
     
-def preproc_garbody(gar, body, side='front', gar_c=None, body_min=None):
-    import os
-    import copy
+def preproc_garbody(gar, body, garment_class=None, side='front'):
     gar = copy.copy(gar)
     body = copy.copy(body)
-    if gar_c == 'smooth_Pants':
-        gar = fill_pants_hole(gar)
 
     rotmat = get_rotmat(side)
     gar.v = gar.v.dot(rotmat)
     body.v = body.v.dot(rotmat)
 
-    assert(body_min == None)
-    if body_min == None:
-        miny = body.v[:, 1].min() + 0.72
-    else:
-        miny = body_min + 0.72
+    miny = body.v[:, 1].min() + 0.72
 
     gar.v[:, 1] -= miny
     body.v[:, 1] -= miny
     return gar, body
 
 
-def visualize_garment_body(gar, body, outpath, side='front', gar_c=None, body_min=None):
-    import os
-    import copy
+def visualize_garment_body(gar, body, outpath, garment_class='t-shirt', side='front'):
     gar = copy.copy(gar)
     body = copy.copy(body)
-    if gar_c == 'smooth_Pants':
-        gar = fill_pants_hole(gar)
 
     rotmat = get_rotmat(side)
     gar.v = gar.v.dot(rotmat)
     body.v = body.v.dot(rotmat)
 
-    assert(body_min == None)
-    if body_min == None:
-        miny = body.v[:, 1].min() + 0.72
-    else:
-        miny = body_min + 0.72
+    miny = body.v[:, 1].min() + 0.72
 
     gar.v[:, 1] -= miny
     body.v[:, 1] -= miny
-    print(body.v[:, 1].min(), body_min, miny)
 
-    gar_path = "/BS/cpatel/work/data/blender_vis/temp/gar.obj"
-    body_path = "/BS/cpatel/work/data/blender_vis/temp/body.obj"
+    gar_path = "/tmp/gar.obj"
+    body_path = "/tmp/body.obj"
     if gar_path.endswith("obj"):
         gar.write_obj(gar_path)
         body.write_obj(body_path)
@@ -131,62 +110,38 @@ def visualize_garment_body(gar, body, outpath, side='front', gar_c=None, body_mi
         gar.write_ply(gar_path)
         body.write_ply(body_path)
 
-    if gar_c == None:
-        gar_c = 't-shirt'
     thispath = os.path.abspath(__file__)
-    cmd = "blender --background /BS/cpatel/work/data/blender_vis/scene.blend " \
-          "-P {} " \
-          "-- --body {} --gar {} --outpath {} --gar_classes {}".format(
+    cmd = "blender --background {} -P {} -- --body {} --gar {} --outpath {} --gar_classes {}".format(
+            BLEND_FILE,
             thispath,
             body_path,
             gar_path,
             outpath,
-            gar_c
+            garment_class,
             )
     os.system(cmd)
     print("Done")
 
 
-
-def fill_pants_hole(m):
-    if m.v.shape[0] == 4041:
-        return m
-    hole_verts = m.v[[1766, 2598, 3207, 1769, 1765, 1764]]
-    new_v = np.mean(hole_verts, 0, keepdims=True)
-    new_verts = np.concatenate([m.v, new_v], 0)
-    new_f = np.concatenate([m.f[:-4], np.array([[1766, 2598, 4041],[2598, 3207, 4041],[3207, 1769, 4041],
-                                               [1769, 1765, 4041],[1765,1764,4041],[1764,1766,4041]])], 0)
-    from psbody.mesh import Mesh
-    new_m = Mesh(v=new_verts, f=new_f)
-    return new_m
-
-
-def visualize_two_garments_body(lower, upper, body, outpath, side='front', low_c=None, up_c=None, body_min=None):
-    import os
-    import copy
+def visualize_two_garments_body(lower, upper, body, outpath, lower_gc=None, upper_gc=None, side='front'):
     lower = copy.copy(lower)
     upper = copy.copy(upper)
     body = copy.copy(body)
-    if low_c == 'smooth_Pants':
-        lower = fill_pants_hole(lower)
 
     rotmat = get_rotmat(side)
     lower.v = lower.v.dot(rotmat)
     upper.v = upper.v.dot(rotmat)
     body.v = body.v.dot(rotmat)
 
-    if body_min is None:
-        miny = body.v[:, 1].min() + 0.72
-    else:
-        miny = body_min + 0.72
+    miny = body.v[:, 1].min() + 0.72
 
     lower.v[:, 1] -= miny
     upper.v[:, 1] -= miny
     body.v[:, 1] -= miny
 
-    lower_path = "/BS/cpatel/work/data/blender_vis/temp/lower.obj"
-    upper_path = "/BS/cpatel/work/data/blender_vis/temp/upper.obj"
-    body_path = "/BS/cpatel/work/data/blender_vis/temp/body.obj"
+    lower_path = "/tmp/lower.obj"
+    upper_path = "/tmp/upper.obj"
+    body_path = "/tmp/body.obj"
     if body_path.endswith("obj"):
         lower.write_obj(lower_path)
         upper.write_obj(upper_path)
@@ -197,23 +152,21 @@ def visualize_two_garments_body(lower, upper, body, outpath, side='front', low_c
         body.write_ply(body_path)
 
     thispath = os.path.abspath(__file__)
-    cmd = "blender --background /BS/cpatel/work/data/blender_vis/scene.blend " \
-          "-P {} " \
-          "-- --body {} --gar {} {} --outpath {} --gar_classes {} {}".format(
+    cmd = "blender --background {} -P {}  -- --body {} --gar {} {} --outpath {} --gar_classes {} {}".format(
+            BLEND_FILE,
             thispath,
             body_path,
             lower_path,
             upper_path,
             outpath,
-            low_c,
-            up_c,
+            lower_gc,
+            upper_gc,
             )
     os.system(cmd)
     print("Done")
 
 
-
-def visualize_garment(gar, outpath, side='front', garment_class='t-shirt'):
+def visualize_garment(gar, outpath, garment_class='t-shirt', side='front'):
     import os
     import copy
     gar = copy.copy(gar)
@@ -221,16 +174,15 @@ def visualize_garment(gar, outpath, side='front', garment_class='t-shirt'):
     rotmat = get_rotmat(side)
     gar.v = gar.v.dot(rotmat)
 
-    gar_path = "/BS/cpatel/work/data/blender_vis/temp/gar.obj"
+    gar_path = "/tmp/gar.obj"
     if gar_path.endswith("obj"):
         gar.write_obj(gar_path)
     else:
         gar.write_ply(gar_path)
 
     thispath = os.path.abspath(__file__)
-    cmd = "blender --background /BS/cpatel/work/data/blender_vis/scene.blend " \
-          "-P {} " \
-          "-- --gar {} --outpath {} --gar_classes {}".format(
+    cmd = "blender --background {} -P {} -- --gar {} --outpath {} --gar_classes {}".format(
+        BLEND_FILE,
         thispath,
         gar_path,
         outpath,
@@ -238,6 +190,7 @@ def visualize_garment(gar, outpath, side='front', garment_class='t-shirt'):
     )
     os.system(cmd)
     print("Done")
+
 
 def visualize_body(body, outpath, side='front'):
     import os
@@ -247,18 +200,19 @@ def visualize_body(body, outpath, side='front'):
     rotmat = get_rotmat(side)
     body.v = body.v.dot(rotmat)
 
-    body_path = "/BS/cpatel/work/data/blender_vis/temp/body.obj"
+    thispath = os.path.abspath(__file__)
+    body_path = "/tmp/body.obj"
     if body_path.endswith("obj"):
         body.write_obj(body_path)
     else:
         body.write_ply(body_path)
 
-    cmd = "blender --background /BS/cpatel/work/data/blender_vis/scene.blend " \
-          "-P /BS/cpatel/work/projects/learn_anim/formpi/visualization/blender_renderer.py " \
-          "-- --body {} --outpath {}".format(
+    cmd = "blender --background {} -P {} -- --body {} --outpath {}".format(
+        BLEND_FILE,
+        thispath,
         body_path,
         outpath,
-        side
+        side,
     )
     os.system(cmd)
     print("Done")
@@ -284,6 +238,7 @@ if __name__ == "__main__":
 
     dd = {
         't-shirt': 1,
+        'old-t-shirt': 1,
         'shirt': 2,
         'pants': 3,
         'skirt': 4,

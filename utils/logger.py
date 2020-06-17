@@ -33,4 +33,4 @@ class TailorNetLogger(BaseLogger):
     def __init__(self, log_name='tailornet.csv'):
         super(TailorNetLogger, self).__init__(log_name,
             ['garment_class', 'gender', 'smooth_level', 'best_error', 'best_epoch', 'time', 'batch_size',
-             'lr', 'weight_decay', 'note', 'log_name', 'style_shape', 'checkpoint'])
+             'lr', 'weight_decay', 'note', 'log_name', 'shape_style', 'checkpoint'])
