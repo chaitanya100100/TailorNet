@@ -14,9 +14,10 @@ SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed
 LOG_DIR = '/BS/cpatel/work/data/learn_anim'
 
 # TailorNet trained models path
-LF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_lf"
-HF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_hf"
-SS2G_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/tn_orig_ss2g"
+prefix = "t-shirt_male_weights/tn_orig"
+LF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_lf".format(prefix)
+HF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_hf".format(prefix)
+SS2G_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_ss2g".format(prefix)
 
 # --------------------------------------------------------------------
 # Variable below hardly need to change

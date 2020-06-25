@@ -295,13 +295,13 @@ def visualize():
 
 def save_smooth():
     """Helper function to save smooth garment displacements."""
-    garment_class = 'old-t-shirt'
+    garment_class = 't-shirt'
     gender = 'female'
     smooth_level = 1
     OUT_DIR = global_var.SMOOTH_DATA_DIR
 
     data_dir = os.path.join(global_var.DATA_DIR, '{}_{}'.format(garment_class, gender))
-    with open(os.path.join(data_dir, "test.txt"), "r") as f:
+    with open(os.path.join(data_dir, "pivots.txt"), "r") as f:
         train_pivots = [l.strip().split('_') for l in f.readlines()]
 
     with open(os.path.join(global_var.DATA_DIR, global_var.GAR_INFO_FILE), 'rb') as f:
@@ -332,12 +332,11 @@ def save_smooth():
                 print("{} doesn't exist.".format(verts_d_path))
                 seq_idx += 1
                 continue
-            print(verts_d_path)
             outpath = os.path.join(outdir, "smooth_unposed_{:03d}.npy".format(seq_idx))
-            if os.path.exists(outpath):
-                print("skipping")
-                seq_idx += 1
-                continue
+            # if os.path.exists(outpath):
+            #     seq_idx += 1
+            #     continue
+            print(verts_d_path)
             thetas = torch.from_numpy(data['thetas'].astype(np.float32))
             verts_d = torch.from_numpy(np.load(verts_d_path).astype(np.float32))
             smooth_verts_d = []
@@ -351,6 +350,6 @@ def save_smooth():
 
 
 if __name__ == "__main__":
-    visualize()
-    # save_smooth()
+    # visualize()
+    save_smooth()
     pass

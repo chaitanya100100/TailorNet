@@ -114,7 +114,7 @@ class Trainer(object):
         """
         gt_verts, thetas, betas, gammas, _ = inputs
 
-        thetas = ops.mask_thetas(thetas, self.garment_class)
+        thetas, betas, gammas = ops.mask_inputs(thetas, betas, gammas, self.garment_class)
         gt_verts = gt_verts.to(device)
         thetas = thetas.to(device)
         betas = betas.to(device)
@@ -252,7 +252,8 @@ class Runner(object):
         self.model.eval()
 
     def forward(self, thetas, betas, gammas):
-        thetas = ops.mask_thetas(thetas=thetas, garment_class=self.garment_class)
+        thetas, betas, gammas = ops.mask_inputs(
+            thetas, betas, gammas, garment_class=self.garment_class)
         pred_verts = self.model(torch.cat((thetas, betas, gammas), dim=1))
         return pred_verts
 

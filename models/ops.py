@@ -30,6 +30,42 @@ def mask_thetas(thetas, garment_class):
     return thetas * mask
 
 
+def mask_betas(betas, garment_class):
+    """
+    betas: shape [N, 10]
+    garment_class: e.g. t-shirt
+    """
+    valid_beta = [0, 1]
+    mask = torch.zeros_like(betas)
+    mask[:, valid_beta] = 1.
+    return betas * mask
+
+
+def mask_gammas(gammas, garment_class):
+    """
+    gammas: shape [N, 4]
+    garment_class: e.g. t-shirt
+    """
+    valid_gamma = [0, 1]
+    mask = torch.zeros_like(gammas)
+    mask[:, valid_gamma] = 1.
+    gammas = gammas * mask
+    if garment_class == 'old-t-shirt':
+        gammas = gammas + torch.tensor(
+            [[0., 0., 1.5, 0.]], dtype=torch.float32, device=gammas.device)
+    return gammas
+
+
+def mask_inputs(thetas, betas, gammas, garment_class):
+    if thetas is not None:
+        thetas = mask_thetas(thetas, garment_class)
+    if betas is not None:
+        betas = mask_betas(betas, garment_class)
+    if gammas is not None:
+        gammas = mask_gammas(gammas, garment_class)
+    return thetas, betas, gammas
+
+
 def pairwise_distances(x, y=None):
     """
     Input: x is a Nxd matrix

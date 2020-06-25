@@ -110,8 +110,8 @@ def evaluate():
     from utils.eval import AverageMeter
     from models import ops
 
-    gender = 'female'
-    garment_class = 'old-t-shirt'
+    gender = 'male'
+    garment_class = 't-shirt'
 
     dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
     dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False, drop_last=False)
@@ -127,7 +127,7 @@ def evaluate():
         for i, inputs in enumerate(dataloader):
             gt_verts, thetas, betas, gammas, _ = inputs
 
-            thetas = ops.mask_thetas(thetas, garment_class)
+            thetas, betas, gammas = ops.mask_inputs(thetas, betas, gammas, garment_class)
             gt_verts = gt_verts.to(device)
             thetas = thetas.to(device)
             betas = betas.to(device)

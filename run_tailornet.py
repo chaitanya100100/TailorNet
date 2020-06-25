@@ -27,13 +27,24 @@ def get_single_frame_inputs(garment_class, gender):
         get_specific_shape('somethin'),
         get_specific_shape('somefat'),
     ]
-    gammas = [
-        get_specific_style_old_tshirt('mean'),
-        get_specific_style_old_tshirt('big'),
-        get_specific_style_old_tshirt('small'),
-        get_specific_style_old_tshirt('shortsleeve'),
-        get_specific_style_old_tshirt('big_shortsleeve'),
-    ]
+    # old t-shirt style parameters are centered around [1.5, 0.5, 1.5, 0.0]
+    # whereas all other garments styles are centered around [0, 0, 0, 0]
+    if garment_class == 'old-t-shirt':
+        gammas = [
+            get_specific_style_old_tshirt('mean'),
+            get_specific_style_old_tshirt('big'),
+            get_specific_style_old_tshirt('small'),
+            get_specific_style_old_tshirt('shortsleeve'),
+            get_specific_style_old_tshirt('big_shortsleeve'),
+        ]
+    else:
+        gammas = [
+            get_style('000', garment_class=garment_class, gender=gender),
+            get_style('001', garment_class=garment_class, gender=gender),
+            get_style('002', garment_class=garment_class, gender=gender),
+            get_style('003', garment_class=garment_class, gender=gender),
+            get_style('004', garment_class=garment_class, gender=gender),
+        ]
     thetas = [
         get_specific_pose(0),
         get_specific_pose(1),
@@ -47,7 +58,10 @@ def get_single_frame_inputs(garment_class, gender):
 def get_sequence_inputs(garment_class, gender):
     """Prepare sequence inputs."""
     beta = get_specific_shape('somethin')
-    gamma = get_specific_style_old_tshirt('big_longsleeve')
+    if garment_class == 'old-t-shirt':
+        gamma = get_specific_style_old_tshirt('big_longsleeve')
+    else:
+        gamma = get_style('000', gender=gender, garment_class=garment_class)
 
     # downsample sequence frames by 2
     thetas = get_amass_sequence_thetas('05_02')[::2]
@@ -58,8 +72,8 @@ def get_sequence_inputs(garment_class, gender):
 
 
 def run_tailornet():
-    gender = 'female'
-    garment_class = 'old-t-shirt'
+    gender = 'male'
+    garment_class = 't-shirt'
     thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
     # uncomment the line below to run inference on sequence data
     # thetas, betas, gammas = get_sequence_inputs(garment_class, gender)
@@ -74,6 +88,7 @@ def run_tailornet():
 
     # run inference
     for i, (theta, beta, gamma) in enumerate(zip(thetas, betas, gammas)):
+        print(i, len(thetas))
         # normalize y-rotation to make it front facing
         theta_normalized = normalize_y_rotation(theta)
         with torch.no_grad():
@@ -103,7 +118,7 @@ def render_images():
         pred_gar = Mesh(filename=os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
 
         visualize_garment_body(
-            pred_gar, body, os.path.join(OUT_PATH, "img_{:04d}.png".format(i)), garment_class='old-t-shirt')
+            pred_gar, body, os.path.join(OUT_PATH, "img_{:04d}.png".format(i)), garment_class='t-shirt', side='front')
         i += 1
 
     # Concate frames of sequence data using this command

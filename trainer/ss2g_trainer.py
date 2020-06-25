@@ -9,6 +9,7 @@ from models import networks
 from dataset.canonical_pose_dataset import ShapeStyleCanonPose
 import global_var
 from trainer import base_trainer
+from models import ops
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")
@@ -43,6 +44,7 @@ class SS2GTrainer(base_trainer.Trainer):
 
     def one_step(self, inputs):
         gt_verts, _, betas, gammas, _ = inputs
+        _, betas, gammas = ops.mask_inputs(None, betas, gammas, self.garment_class)
 
         gt_verts = gt_verts.to(device)
         betas = betas.to(device)
@@ -87,6 +89,7 @@ class Runner(object):
         self.model.eval()
 
     def forward(self, thetas=None, betas=None, gammas=None):
+        _, betas, gammas = ops.mask_inputs(None, betas, gammas, self.garment_class)
         pred_verts = self.model(torch.cat((betas, gammas), dim=1))
         return pred_verts
 
