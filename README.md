@@ -23,6 +23,7 @@ scipy
 - Download trained models' weights and unzip it. Set paths of `LF_MODEL_PATH`, `HF_MODEL_PATH` and
 `SS2G_MODEL_PATH` variables in `global_var.py` accordingly.
   - [old-t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/old-t-shirt_female_weights.zip)
+  - [t-shirt_male_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/t-shirt_male_weights.zip)
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
