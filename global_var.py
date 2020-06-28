@@ -14,7 +14,7 @@ SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed
 LOG_DIR = '/BS/cpatel/work/data/learn_anim'
 
 # TailorNet trained models path
-prefix = "t-shirt_male_weights/tn_orig"
+prefix = "old-t-shirt_female_weights/tn_orig"
 LF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_lf".format(prefix)
 HF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_hf".format(prefix)
 SS2G_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_ss2g".format(prefix)

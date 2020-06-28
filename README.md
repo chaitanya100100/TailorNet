@@ -10,6 +10,11 @@ CVPR 2020 (ORAL)
 [[Dataset Repo](https://github.com/zycliao/TailorNet_dataset)]
 [[Youtube](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
 
+## Updates
+- [28-06-2020] Female t-shirt weights added.
+- [25-06-2020] Minor bug fixes and male t-shirt weights added.
+- [17-06-2020] Inference script and female old-t-shirt weights added.
+
 ## Requirements
 python3  
 pytorch  
@@ -24,6 +29,7 @@ scipy
 `SS2G_MODEL_PATH` variables in `global_var.py` accordingly.
   - [old-t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/old-t-shirt_female_weights.zip)
   - [t-shirt_male_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/t-shirt_male_weights.zip)
+  - [t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/t-shirt_female_weights.zip)
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
