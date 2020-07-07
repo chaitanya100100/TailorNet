@@ -11,7 +11,9 @@ CVPR 2020 (ORAL)
 [[Youtube](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
 
 ## TailorNet Predictions
-![old-t-shirt_female results](./z_results/old-t-shirt_female_cherrypicked.gif)
+|old-t-shirt_female|t-shirt_female|t-shirt_male|
+|:--:|:--:|:--:|
+|![old-t-shirt_female results](./z_results/old-t-shirt_female_cherrypicked.gif)|![t-shirt_female results](./z_results/t-shirt_female_random.gif)|![t-shirt_male results](./z_results/t-shirt_male_random.gif)|
 
 
 ## Updates
