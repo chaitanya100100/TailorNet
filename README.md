@@ -10,6 +10,10 @@ CVPR 2020 (ORAL)
 [[Dataset Repo](https://github.com/zycliao/TailorNet_dataset)]
 [[Youtube](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
 
+## TailorNet Predictions
+![old-t-shirt_female results](./z_results/old-t-shirt_female_cherrypicked.gif)
+
+
 ## Updates
 - [28-06-2020] Female t-shirt weights added.
 - [25-06-2020] Minor bug fixes and male t-shirt weights added.

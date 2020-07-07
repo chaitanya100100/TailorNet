@@ -123,6 +123,8 @@ def render_images():
 
     # Concate frames of sequence data using this command
     # ffmpeg -r 10 -i /BS/cpatel/work/code_test/img_%04d.png -vcodec libx264 -crf 10  -pix_fmt yuv420p /BS/cpatel/work/check.mp4
+    # Make GIF
+    # convert -delay 200 -loop 0 -dispose 2 *.png check.gif
 
 
 if __name__ == '__main__':
