@@ -92,52 +92,15 @@ class TailorNetModel(object):
 
 def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf_logdir=None, ss2g_logdir=None):
     """Helper function to get TailorNet runner."""
-    lf_logdir = global_var.LF_MODEL_PATH if lf_logdir is None else lf_logdir
-    hf_logdir = global_var.HF_MODEL_PATH if hf_logdir is None else hf_logdir
-    ss2g_logdir = global_var.SS2G_MODEL_PATH if ss2g_logdir is None else ss2g_logdir
+    lf_logdir = global_var.LF_MODEL_PATH.format(garment_class, gender) if lf_logdir is None else lf_logdir
+    hf_logdir = global_var.HF_MODEL_PATH.format(garment_class, gender) if hf_logdir is None else hf_logdir
+    ss2g_logdir = global_var.SS2G_MODEL_PATH.format(garment_class, gender) if ss2g_logdir is None else ss2g_logdir
 
     lf_logdir = os.path.join(lf_logdir, "{}_{}".format(garment_class, gender))
     hf_logdir = os.path.join(hf_logdir, "{}_{}".format(garment_class, gender))
     ss2g_logdir = os.path.join(ss2g_logdir, "{}_{}".format(garment_class, gender))
     runner = TailorNetModel(lf_logdir, hf_logdir, ss2g_logdir, garment_class, gender)
     return runner
-
-
-def evaluate():
-    """Evaluate TailorNet (or any model for that matter) on test set."""
-    from dataset.static_pose_shape_final import MultiStyleShape
-    from torch.utils.data import DataLoader
-    from utils.eval import AverageMeter
-    from models import ops
-
-    gender = 'male'
-    garment_class = 't-shirt'
-
-    dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
-    dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False, drop_last=False)
-    print(len(dataset))
-
-    val_dist = AverageMeter()
-    runner = get_best_runner(garment_class, gender)
-    # from trainer.base_trainer import get_best_runner as baseline_runner
-    # runner = baseline_runner("/BS/cpatel/work/data/learn_anim/tn_baseline/{}_{}".format(garment_class, gender))
-
-    device = torch.device('cuda:0')
-    with torch.no_grad():
-        for i, inputs in enumerate(dataloader):
-            gt_verts, thetas, betas, gammas, _ = inputs
-
-            thetas, betas, gammas = ops.mask_inputs(thetas, betas, gammas, garment_class)
-            gt_verts = gt_verts.to(device)
-            thetas = thetas.to(device)
-            betas = betas.to(device)
-            gammas = gammas.to(device)
-            pred_verts = runner.forward(thetas=thetas, betas=betas, gammas=gammas).view(gt_verts.shape)
-
-            dist = ops.verts_dist(gt_verts, pred_verts) * 1000.
-            val_dist.update(dist.item(), gt_verts.shape[0])
-            print(i, len(dataloader))
-    print(val_dist.avg)
 
 
 if __name__ == '__main__':

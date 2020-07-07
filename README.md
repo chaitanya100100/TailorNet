@@ -64,6 +64,15 @@ weights_folder
 ```
 and then you won't need to change model checkpoint paths while dealing with multiple garments.
 
+## TailorNet Per-vertex Error in mm on Test Set
+
+| garment_class | gender | TailorNet  |  TailorNet      |
+|               |        | Baseline   |  Mixture Model  |
+|---------------|--------|------------|-----------------|
+|  old-t-shirt  | female |    11.1    |     10.7        |
+|      t-shirt  | female |    12.6    |     12.3        |
+|      t-shirt  |   male |    11.4    |     11.2        |
+
 
 ## Training TailorNet yourself
 - Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.

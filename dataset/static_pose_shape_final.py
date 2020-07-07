@@ -62,7 +62,8 @@ class OneStyleShape(Dataset):
             data = np.load(seq_path)
             verts_d_path = os.path.join(data_dir, 'pose/{}_{}/unposed_{:03d}.npy'.format(shape_idx, style_idx, seq_idx))
             if not os.path.exists(verts_d_path):
-                print("{} doesn't exist.".format(verts_d_path))
+                print("{} doesn't exist. This is not an error. "
+                      "It's just that this sequence was not simulated well.".format(verts_d_path))
                 seq_idx += 1
                 continue
 
@@ -258,12 +259,12 @@ class MultiStyleShape(Dataset):
 def visualize():
     from models.smpl4garment import SMPL4Garment
 
-    garment_class = 'old-t-shirt'
+    garment_class = 'shirt'
     gender = 'female'
     split = None
     style_idx = '000'
     shape_idx = '008'
-    smooth_level = 0
+    smooth_level = 1
 
     smpl = SMPL4Garment(gender=gender)
 
@@ -295,8 +296,8 @@ def visualize():
 
 def save_smooth():
     """Helper function to save smooth garment displacements."""
-    garment_class = 't-shirt'
-    gender = 'female'
+    garment_class = 'shirt'
+    gender = 'male'
     smooth_level = 1
     OUT_DIR = global_var.SMOOTH_DATA_DIR
 
@@ -333,9 +334,9 @@ def save_smooth():
                 seq_idx += 1
                 continue
             outpath = os.path.join(outdir, "smooth_unposed_{:03d}.npy".format(seq_idx))
-            # if os.path.exists(outpath):
-            #     seq_idx += 1
-            #     continue
+            if os.path.exists(outpath):
+                seq_idx += 1
+                continue
             print(verts_d_path)
             thetas = torch.from_numpy(data['thetas'].astype(np.float32))
             verts_d = torch.from_numpy(np.load(verts_d_path).astype(np.float32))
