@@ -17,6 +17,7 @@ CVPR 2020 (ORAL)
 
 
 ## Updates
+- [12-07-2020] Female shirt weights added.
 - [28-06-2020] Female t-shirt weights added.
 - [25-06-2020] Minor bug fixes and male t-shirt weights added.
 - [17-06-2020] Inference script and female old-t-shirt weights added.
@@ -39,6 +40,8 @@ scipy
         (2.0 GB)
   - [t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/t-shirt_female_weights.zip)
         (2.0 GB)
+  - [shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/shirt_female_weights.zip)
+        (2.5 GB)
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.

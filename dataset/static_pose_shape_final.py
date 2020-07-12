@@ -335,6 +335,7 @@ def save_smooth():
                 continue
             outpath = os.path.join(outdir, "smooth_unposed_{:03d}.npy".format(seq_idx))
             if os.path.exists(outpath):
+                print("{} exists.".format(outpath))
                 seq_idx += 1
                 continue
             print(verts_d_path)
