@@ -5,12 +5,13 @@ TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garm
 Chaitanya Patel*, Zhouyingcheng Liao*, Gerard Pons-Moll  
 CVPR 2020 (ORAL)  
 ```
-[[arxiv](https://arxiv.org/abs/2003.04583)]
-[[project website](https://virtualhumans.mpi-inf.mpg.de/tailornet/)]
+[[ArXiv](https://arxiv.org/abs/2003.04583)]
+[[Project Website](https://virtualhumans.mpi-inf.mpg.de/tailornet/)]
 [[Dataset Repo](https://github.com/zycliao/TailorNet_dataset)]
 [[Youtube](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
 
-## TailorNet Predictions
+![Teaser](./z_results/patel20tailornet.png)
+
 |old-t-shirt_female|t-shirt_female|t-shirt_male|
 |:--:|:--:|:--:|
 |![old-t-shirt_female results](./z_results/old-t-shirt_female_cherrypicked.gif)|![t-shirt_female results](./z_results/t-shirt_female_random.gif)|![t-shirt_male results](./z_results/t-shirt_male_random.gif)|
