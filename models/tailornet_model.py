@@ -92,9 +92,12 @@ class TailorNetModel(object):
 
 def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf_logdir=None, ss2g_logdir=None):
     """Helper function to get TailorNet runner."""
-    lf_logdir = global_var.LF_MODEL_PATH.format(garment_class, gender) if lf_logdir is None else lf_logdir
-    hf_logdir = global_var.HF_MODEL_PATH.format(garment_class, gender) if hf_logdir is None else hf_logdir
-    ss2g_logdir = global_var.SS2G_MODEL_PATH.format(garment_class, gender) if ss2g_logdir is None else ss2g_logdir
+    if lf_logdir is None:
+        lf_logdir = os.path.join(global_var.MODEL_WEIGHTS_PATH, "{}_{}_weights/tn_orig_lf".format(garment_class, gender))
+    if hf_logdir is None:
+        hf_logdir = os.path.join(global_var.MODEL_WEIGHTS_PATH, "{}_{}_weights/tn_orig_hf".format(garment_class, gender))
+    if ss2g_logdir is None:
+        ss2g_logdir = os.path.join(global_var.MODEL_WEIGHTS_PATH, "{}_{}_weights/tn_orig_ss2g".format(garment_class, gender))
 
     lf_logdir = os.path.join(lf_logdir, "{}_{}".format(garment_class, gender))
     hf_logdir = os.path.join(hf_logdir, "{}_{}".format(garment_class, gender))
@@ -104,7 +107,6 @@ def get_best_runner(garment_class='t-shirt', gender='female', lf_logdir=None, hf
 
 
 if __name__ == '__main__':
-    evaluate()
     # gender = 'male'
     # garment_class = 't-shirt'
     # runner = get_best_runner(garment_class, gender)

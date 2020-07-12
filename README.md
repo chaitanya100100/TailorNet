@@ -33,8 +33,7 @@ scipy
 ## How to Run
 - Download and prepare SMPL model and TailorNet data from [dataset repository](https://github.com/zycliao/TailorNet_dataset).
 - Set DATA_DIR and SMPL paths in `global_var.py` file accordingly.
-- Download trained models' weights and unzip it. Set paths of `LF_MODEL_PATH`, `HF_MODEL_PATH` and
-`SS2G_MODEL_PATH` variables in `global_var.py` accordingly.
+- Download trained model weights in a directory and set its path to MODEL_WEIGHTS_PATH variable in `global_var.py`.
   - [old-t-shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/old-t-shirt_female_weights.zip)
         (4.1 GB)
   - [t-shirt_male_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/t-shirt_male_weights.zip)
@@ -48,32 +47,6 @@ scipy
   different inputs. You can also run inference on motion sequence data.
 - To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender needs to be installed.)
 
-
-#### If you download trained model weights for multiple garments...
-... then you can merge downloaded weights directories to follow a directory structure similar to the following.
-```
-weights_folder
-----tn_orig_baseline
---------{garment_class}_{gender}  (e.g. t-shirt_female)
-------------lin.pth.tar  (model weights)
-------------params.json  (some model params)
-----tn_orig_lf
---------{garment_class}_{gender}
-------------lin.pth.tar
-------------params.json
-----tn_orig_ss2g
---------{garment_class}_{gender}
-------------lin.pth.tar
-------------params.json
-----tn_orig_hf
---------{garment_class}_{gender}
-------------{shape_idx}_{style_idx}  (e.g. 000_023 pivot)
-----------------lin.pth.tar
-----------------params.json
-
-```
-and then you won't need to change model checkpoint paths while dealing with multiple garments.
-
 ## TailorNet Per-vertex Error in mm on Test Set
 ... evaluated using `evaluate` function in `utils/eval.py`.
 | garment_class | gender | TailorNet Baseline | TailorNet Mixture Model |
@@ -82,7 +55,6 @@ and then you won't need to change model checkpoint paths while dealing with mult
 |      t-shirt  | female | 12.6 | 12.3 |
 |      t-shirt  |   male | 11.4 | 11.2 |
 |        shirt  | female | 14.2 | 14.1 |
-
 
 ## Training TailorNet yourself
 - Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.

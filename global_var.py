@@ -13,10 +13,8 @@ SMPL_PATH_FEMALE = '/BS/RVH/work/data/smpl_models/lrotmin/lbs_tj10smooth6_0fixed
 # Log directory where training logs, checkpoints and visualizations will be stored
 LOG_DIR = '/BS/cpatel/work/data/learn_anim'
 
-# TailorNet trained models path
-LF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_{}_weights/tn_orig_lf"
-HF_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_{}_weights/tn_orig_hf"
-SS2G_MODEL_PATH = "/BS/cpatel/work/data/learn_anim/{}_{}_weights/tn_orig_ss2g"
+# Downloaded TailorNet trained models' path
+MODEL_WEIGHTS_PATH = "/BS/cpatel/work/data/learn_anim"
 
 # --------------------------------------------------------------------
 # Variable below hardly need to change
