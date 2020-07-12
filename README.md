@@ -80,6 +80,7 @@ and then you won't need to change model checkpoint paths while dealing with mult
 |  old-t-shirt  | female | 11.1 | 10.7 |
 |      t-shirt  | female | 12.6 | 12.3 |
 |      t-shirt  |   male | 11.4 | 11.2 |
+|        shirt  | female | 14.2 | 14.1 |
 
 
 ## Training TailorNet yourself
