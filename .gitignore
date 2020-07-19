@@ -1,2 +1,3 @@
 __pycache__/
 *.pyc
+trainer/test_trainer.py

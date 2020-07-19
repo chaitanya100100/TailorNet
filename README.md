@@ -42,6 +42,8 @@ scipy
         (2.0 GB)
   - [shirt_female_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/shirt_female_weights.zip)
         (2.5 GB)
+  - [shirt_male_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/shirt_male_weights.zip)
+        (2.5 GB)
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
@@ -55,6 +57,7 @@ scipy
 |      t-shirt  | female | 12.6 | 12.3 |
 |      t-shirt  |   male | 11.4 | 11.2 |
 |        shirt  | female | 14.2 | 14.1 |
+|        shirt  |   male | 12.7 | 12.5 |
 
 ## Training TailorNet yourself
 - Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.
@@ -84,3 +87,6 @@ Cite us if you use our model, code or data:
 - Thanks to Bharat for many fruitful discussions and for `smpl_lib` library taken from his MultiGarmentNet 
 repo's [lib](https://github.com/bharat-b7/MultiGarmentNetwork/tree/master/lib) folder.
 - Thanks to Garvita for helping out during the onerous procedure of data generation.
+
+
+For any doubt or concert about the code, raise an issue on this repository.

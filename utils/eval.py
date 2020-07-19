@@ -26,7 +26,7 @@ def evaluate():
     from utils.eval import AverageMeter
     from models import ops
 
-    gender = 'female'
+    gender = 'male'
     garment_class = 'shirt'
 
     dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
