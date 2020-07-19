@@ -18,6 +18,7 @@ CVPR 2020 (ORAL)
 
 
 ## Updates
+- [19-07-2020] Male shirt weights added.
 - [12-07-2020] Female shirt weights added.
 - [28-06-2020] Female t-shirt weights added.
 - [25-06-2020] Minor bug fixes and male t-shirt weights added.
