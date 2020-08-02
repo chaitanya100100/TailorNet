@@ -46,7 +46,7 @@ SMOOTH_STORED = True
 """
 ## SMPL joint
 ID  parent  name
-0   -1      ass
+0   -1      pelvis
 1   0       L hip
 2   0       R hip
 3   0       stomach
@@ -77,6 +77,6 @@ VALID_THETA = {
     't-shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19],
     'old-t-shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19],
     'shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21],
-    'pants': [0, 1, 2, 4, 5, 7, 8],
+    'pant': [0, 1, 2, 4, 5, 7, 8],
     'skirt' : [0, 1, 2, ],
 }

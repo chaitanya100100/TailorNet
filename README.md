@@ -18,6 +18,7 @@ CVPR 2020 (ORAL)
 
 
 ## Updates
+- [02-08-2020] Female and male pant weights added.
 - [19-07-2020] Male shirt weights added.
 - [12-07-2020] Female shirt weights added.
 - [28-06-2020] Female t-shirt weights added.
@@ -45,6 +46,7 @@ scipy
         (2.5 GB)
   - [shirt_male_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/shirt_male_weights.zip)
         (2.5 GB)
+  - pant_female_weights and pant_male_weights available [here](https://nextcloud.mpi-klsb.mpg.de/index.php/s/LTWJPcRt7gsgoss)
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
@@ -59,6 +61,8 @@ scipy
 |      t-shirt  |   male | 11.4 | 11.2 |
 |        shirt  | female | 14.2 | 14.1 |
 |        shirt  |   male | 12.7 | 12.5 |
+|         pant  | female |  4.7 |  4.8 |
+|         pant  |   male |  8.1 |  8.1 |
 
 ## Training TailorNet yourself
 - Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.

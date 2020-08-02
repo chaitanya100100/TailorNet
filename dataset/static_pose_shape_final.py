@@ -296,8 +296,8 @@ def visualize():
 
 def save_smooth():
     """Helper function to save smooth garment displacements."""
-    garment_class = 'shirt'
-    gender = 'male'
+    garment_class = 'pant'
+    gender = 'female'
     smooth_level = 1
     OUT_DIR = global_var.SMOOTH_DATA_DIR
 

@@ -72,8 +72,8 @@ def get_sequence_inputs(garment_class, gender):
 
 
 def run_tailornet():
-    gender = 'male'
-    garment_class = 'shirt'
+    gender = 'female'
+    garment_class = 'pant'
     thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
     # # uncomment the line below to run inference on sequence data
     # thetas, betas, gammas = get_sequence_inputs(garment_class, gender)
@@ -122,10 +122,10 @@ def render_images():
         i += 1
 
     # Concate frames of sequence data using this command
-    # ffmpeg -r 10 -i /BS/cpatel/work/code_test/img_%04d.png -vcodec libx264 -crf 10  -pix_fmt yuv420p /BS/cpatel/work/check.mp4
+    # ffmpeg -r 10 -i img_%04d.png -vcodec libx264 -crf 10  -pix_fmt yuv420p check.mp4
     # Make GIF
     # convert -delay 200 -loop 0 -dispose 2 *.png check.gif
-    # convert shirt_male_random.gif -resize 512x512 shirt_male_random_small.gif
+    # convert check.gif -resize 512x512 check_small.gif
 
 
 if __name__ == '__main__':
