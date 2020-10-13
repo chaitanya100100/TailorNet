@@ -296,13 +296,13 @@ def visualize():
 
 def save_smooth():
     """Helper function to save smooth garment displacements."""
-    garment_class = 'pant'
+    garment_class = 'skirt'
     gender = 'female'
     smooth_level = 1
     OUT_DIR = global_var.SMOOTH_DATA_DIR
 
     data_dir = os.path.join(global_var.DATA_DIR, '{}_{}'.format(garment_class, gender))
-    with open(os.path.join(data_dir, "pivots.txt"), "r") as f:
+    with open(os.path.join(data_dir, "test.txt"), "r") as f:
         train_pivots = [l.strip().split('_') for l in f.readlines()]
 
     with open(os.path.join(global_var.DATA_DIR, global_var.GAR_INFO_FILE), 'rb') as f:

@@ -80,7 +80,7 @@ class Runner(object):
 
         with open(os.path.join(global_var.DATA_DIR, global_var.GAR_INFO_FILE), 'rb') as f:
             class_info = pickle.load(f)
-        output_size = class_info[garment_class]['vert_indices'].shape[0] * 3
+        output_size = len(class_info[garment_class]['vert_indices']) * 3
 
         self.model = getattr(networks, model_name)(
             input_size=72, output_size=output_size,

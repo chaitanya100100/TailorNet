@@ -27,7 +27,7 @@ def evaluate():
     from models import ops
 
     gender = 'female'
-    garment_class = 'pant'
+    garment_class = 'skirt'
 
     dataset = MultiStyleShape(garment_class=garment_class, gender=gender, split='test')
     dataloader = DataLoader(dataset, batch_size=32, num_workers=0, shuffle=False, drop_last=False)
