@@ -72,14 +72,16 @@ def get_sequence_inputs(garment_class, gender):
 
 
 def run_tailornet():
-    gender = 'female'
-    garment_class = 'skirt'
+    gender = 'male'
+    garment_class = 'short-pant'
     thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
     # # uncomment the line below to run inference on sequence data
     # thetas, betas, gammas = get_sequence_inputs(garment_class, gender)
 
     # load model
     tn_runner = get_tn_runner(gender=gender, garment_class=garment_class)
+    # from trainer.base_trainer import get_best_runner
+    # tn_runner = get_best_runner("/BS/cpatel/work/data/learn_anim/tn_baseline/skirt_female/")
     smpl = SMPL4Garment(gender=gender)
 
     # make out directory if doesn't exist

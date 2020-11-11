@@ -256,7 +256,7 @@ class Runner(object):
         thetas, betas, gammas = ops.mask_inputs(
             thetas, betas, gammas, garment_class=self.garment_class)
         pred_verts = self.model(torch.cat((thetas, betas, gammas), dim=1))
-        return pred_verts
+        return pred_verts.view(thetas.shape[0], -1, 3)
 
     def cuda(self):
         self.model.cuda()
