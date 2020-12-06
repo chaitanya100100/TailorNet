@@ -52,7 +52,7 @@ scipy
   - [Other garments coming soon]
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
-- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender needs to be installed.)
+- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender 2.79 needs to be installed.)
 
 ## TailorNet Per-vertex Error in mm on Test Set
 ... evaluated using `evaluate` function in `utils/eval.py`.
