@@ -44,12 +44,15 @@ scipy
         (2.5 GB)
   - [shirt_male_weights](https://datasets.d2.mpi-inf.mpg.de/tailornet/shirt_male_weights.zip)
         (2.5 GB)
-  - pant_female_weights and pant_male_weights available [here](https://nextcloud.mpi-klsb.mpg.de/index.php/s/LTWJPcRt7gsgoss)
-  - short-pant_female_weights and short-pant_male_weights available [here](https://nextcloud.mpi-klsb.mpg.de/index.php/s/LTWJPcRt7gsgoss)
-  - [Other garments coming soon]
+  - [This](https://nextcloud.mpi-klsb.mpg.de/index.php/s/LTWJPcRt7gsgoss) link has all the weights listed above as well as the following:
+    - pant_female_weights
+    - pant_male_weights
+    - short-pant_female_weights
+    - short-pant_male_weights
+    - skirt_female_weights
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
-- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender 2.79 needs to be installed.)
+- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender needs to be installed.)
 
 ## TailorNet Per-vertex Error in mm on Test Set
 ... evaluated using `evaluate` function in `utils/eval.py`.
