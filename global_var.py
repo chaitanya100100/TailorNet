@@ -39,9 +39,13 @@ GAR_INFO_FILE = 'garment_class_info.pkl'
 # Root dir for smooth data. Groundtruth smooth data is stored in the same
 # data hierarchy as simulation data under this directory.
 SMOOTH_DATA_DIR = DATA_DIR
+
 # Indicates that smooth groundtruth data is available or not. If False, smoothing
 # will be performed during the training which might slow down the training significantly.
 SMOOTH_STORED = True
+
+# Using smoothing in posed space for skirt
+POSED_SMOOTH_SKIRT = True
 
 """
 ## SMPL joint

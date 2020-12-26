@@ -22,6 +22,21 @@ def smooth_it(smoothing, smooth_level, smpl, thetas, betas, verts, garment_class
     if smooth_level == -1:
         verts = torch.zeros_like(verts)
     elif smooth_level != 0:
+        if garment_class == 'skirt' and global_var.POSED_SMOOTH_SKIRT:
+            _, posed_skirt, skirt_skinning, skirt_base = smpl.forward(
+                theta=thetas[None], beta=betas[None], garment_class=garment_class,
+                garment_d=verts[None], ret_skirt_skinning=True)
+            posed_skirt_smooth = smoothing.smooth(
+                posed_skirt[0].numpy(), smoothness=level_smoothness[smooth_level],
+                Ltype=Ltype, n=level_smoothiter[smooth_level]).astype(np.float32)
+            posed_skirt_smooth = torch.from_numpy(posed_skirt_smooth).to(skirt_skinning.device)
+            posed_skirt_smooth_homo = torch.cat([
+                posed_skirt_smooth,
+                torch.ones(posed_skirt_smooth.shape[0], 1, device=skirt_skinning.device)
+            ], dim=-1)
+            unposed_skirt_smooth = torch.matmul(torch.inverse(skirt_skinning[0]),
+                                                torch.unsqueeze(posed_skirt_smooth_homo, -1))
+            return unposed_skirt_smooth[:, :3, 0] - skirt_base[0]
         v_poseshaped = smpl.forward_poseshaped(
             theta=thetas.unsqueeze(0), beta=betas.unsqueeze(0),
             garment_class=garment_class)[0]
@@ -259,35 +274,39 @@ class MultiStyleShape(Dataset):
 def visualize():
     from models.smpl4garment import SMPL4Garment
 
-    garment_class = 'shirt'
+    garment_class = 'skirt'
     gender = 'female'
     split = None
-    style_idx = '000'
-    shape_idx = '008'
+    style_idx = '003'
+    shape_idx = '000'
     smooth_level = 1
 
     smpl = SMPL4Garment(gender=gender)
 
     # gt_ds = MultiStyleShape(garment_class=garment_class, split=split, smooth_level=smooth_level, gender=gender)
-    # gt_ds = OneStyleShape(garment_class=garment_class, shape_idx=shape_idx, style_idx=style_idx, split=split,
-    #                       smooth_level=smooth_level, gender=gender)
+    gt_ds = OneStyleShape(garment_class=garment_class, shape_idx=shape_idx, style_idx=style_idx, split=split,
+                          smooth_level=smooth_level, gender=gender)
 
-    gt_ds = MultiStyleShape(garment_class=garment_class, split=None, smooth_level=smooth_level, gender=gender)
-    print(len(gt_ds))
-    gt_ds = MultiStyleShape(garment_class=garment_class, split='train', smooth_level=smooth_level, gender=gender)
-    print(len(gt_ds))
-    gt_ds = MultiStyleShape(garment_class=garment_class, split='test', smooth_level=smooth_level, gender=gender)
-    print(len(gt_ds))
+    # gt_ds = MultiStyleShape(garment_class=garment_class, split=None, smooth_level=smooth_level, gender=gender)
+    # print(len(gt_ds))
+    # gt_ds = MultiStyleShape(garment_class=garment_class, split='train', smooth_level=smooth_level, gender=gender)
+    # print(len(gt_ds))
+    # gt_ds = MultiStyleShape(garment_class=garment_class, split='test', smooth_level=smooth_level, gender=gender)
+    # print(len(gt_ds))
 
-    for idx in np.random.randint(0, len(gt_ds), 4):
+    # for idx in np.random.randint(0, len(gt_ds), 4):
+    for idx in [245, 1017, 1274, 1588]:
 
         verts, thetas, betas, gammas, item = gt_ds[idx]
         # verts, sverts, thetas, betas, gammas, item = gt_ds[idx]
+        # verts = torch.zeros_like(verts)
 
         body_m, gar_m = smpl.run(theta=thetas.numpy(), beta=betas.numpy(), garment_class=garment_class,
                                  garment_d=verts.numpy())
-        # body_m.write_ply("/BS/cpatel/work/body_{}.ply".format(idx))
-        # gar_m.write_ply("/BS/cpatel/work/gar_{}.ply".format(idx))
+        # body_m, gar_m = smpl.run(garment_class=garment_class,
+        #                          garment_d=verts.numpy())
+        body_m.write_ply("/BS/cpatel/work/body_{}.ply".format(idx))
+        gar_m.write_ply("/BS/cpatel/work/gar_{}.ply".format(idx))
 
         # _, gar_m = smpl.run(theta=thetas.numpy(), beta=betas.numpy(), garment_class=garment_class,
         #                     garment_d=sverts.numpy())
@@ -296,8 +315,8 @@ def visualize():
 
 def save_smooth():
     """Helper function to save smooth garment displacements."""
-    garment_class = 'short-pant'
-    gender = 'male'
+    garment_class = 'skirt'
+    gender = 'female'
     smooth_level = 1
     OUT_DIR = global_var.SMOOTH_DATA_DIR
 
@@ -352,6 +371,6 @@ def save_smooth():
 
 
 if __name__ == "__main__":
-    # visualize()
-    save_smooth()
+    visualize()
+    # save_smooth()
     pass

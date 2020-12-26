@@ -12,12 +12,9 @@ CVPR 2020 (ORAL)
 
 ![Teaser](./z_results/patel20tailornet.png)
 
-|old-t-shirt_female|t-shirt_female|t-shirt_male|
-|:--:|:--:|:--:|
-|![old-t-shirt_female results](./z_results/old-t-shirt_female_cherrypicked.gif)|![t-shirt_female results](./z_results/t-shirt_female_random.gif)|![t-shirt_male results](./z_results/t-shirt_male_random.gif)|
-
 
 ## Updates
+- [26-12-2020] Female skirt weights added.
 - [11-11-2020] Female and male short-pant weights added.
 - [02-08-2020] Female and male pant weights added.
 - [19-07-2020] Male shirt weights added.
@@ -67,6 +64,7 @@ scipy
 |         pant  |   male |  8.1 |  8.1 |
 |   short-pant  | female |  6.8 |  6.6 |
 |   short-pant  |   male |  7.0 |  7.0 |
+|        skirt  | female |  7.7 |  7.8 |
 
 ## Training TailorNet yourself
 - Set global variables in `global_var.py`, especially LOG_DIR where training logs will be stored.
