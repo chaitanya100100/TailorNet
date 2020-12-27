@@ -8,7 +8,8 @@ CVPR 2020 (ORAL)
 [[ArXiv](https://arxiv.org/abs/2003.04583)]
 [[Project Website](https://virtualhumans.mpi-inf.mpg.de/tailornet/)]
 [[Dataset Repo](https://github.com/zycliao/TailorNet_dataset)]
-[[Youtube](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
+[[Oral Presentation](https://www.youtube.com/watch?v=vg7a52zObjs)]
+[[Results Video](https://www.youtube.com/watch?v=F0O21a_fsBQ)]
 
 ![Teaser](./z_results/patel20tailornet.png)
 
@@ -52,7 +53,7 @@ scipy
     - skirt_female_weights
 - Set output path in `run_tailornet.py` and run it to predict garments on some random inputs. You can play with 
   different inputs. You can also run inference on motion sequence data.
-- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender needs to be installed.)
+- To visualize predicted garment using blender, run `python run_tailornet.py render`. (Blender 2.79 needs to be installed.)
 
 ## TailorNet Per-vertex Error in mm on Test Set
 ... evaluated using `evaluate` function in `utils/eval.py`.
@@ -94,6 +95,7 @@ Cite us if you use our model, code or data:
 ```
 
 ### Misc
+- See [./models/skirt_model.md](./models/skirt_model.md) for the explanation of skirt garment model.
 - Thanks to Bharat for many fruitful discussions and for `smpl_lib` library taken from his MultiGarmentNet 
 repo's [lib](https://github.com/bharat-b7/MultiGarmentNetwork/tree/master/lib) folder.
 - Thanks to Garvita for helping out during the onerous procedure of data generation.

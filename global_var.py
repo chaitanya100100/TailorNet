@@ -17,7 +17,7 @@ LOG_DIR = '/BS/cpatel/work/data/learn_anim'
 MODEL_WEIGHTS_PATH = "/BS/cpatel/work/data/learn_anim"
 
 # --------------------------------------------------------------------
-# Variable below hardly need to change
+# Variables below hardly need to change
 # --------------------------------------------------------------------
 
 # Available genders
@@ -32,9 +32,6 @@ POSE_SPLIT_FILE = 'split_static_pose_shape.npz'
 # where <vert_indices> refers to the indices of high_resolution SMPL
 # template which make <garment_class> garment
 GAR_INFO_FILE = 'garment_class_info.pkl'
-
-# # Skirt template path
-# SKIRT_TEMPLATE = "/BS/cpatel/work/data/garment/Skirt/smooth_Skirt.ply"
 
 # Root dir for smooth data. Groundtruth smooth data is stored in the same
 # data hierarchy as simulation data under this directory.
@@ -83,5 +80,5 @@ VALID_THETA = {
     'shirt': [0, 1, 2, 3, 6, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21],
     'pant': [0, 1, 2, 4, 5, 7, 8],
     'short-pant': [0, 1, 2, 4, 5],
-    'skirt' : [0, 1, 2, 4, 5],
+    'skirt': [0, 1, 2, 4, 5],
 }
