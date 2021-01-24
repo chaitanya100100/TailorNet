@@ -13,6 +13,18 @@ CVPR 2020 (ORAL)
 
 ![Teaser](./z_results/patel20tailornet.png)
 
+## Citation
+Cite us if you use our model, code or data:
+```
+@inproceedings{patel20tailornet,
+        title = {TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garment Style},
+        author = {Patel, Chaitanya and Liao, Zhouyingcheng and Pons-Moll, Gerard},
+        booktitle = {{IEEE} Conference on Computer Vision and Pattern Recognition (CVPR)},
+        month = {jun},
+        organization = {{IEEE}},
+        year = {2020},
+    }
+```
 
 ## Updates
 - [26-12-2020] Female skirt weights added.
@@ -81,18 +93,8 @@ frequency predictors for pivots `<shape1>_<style1>`, `<shape2>_<style2>`, and so
 `DATA_DIR/<garment_class>_<gender>/pivots.txt` to know available pivots.
 - Use `models.tailornet_model.TailorNetModel` with appropriate logdir arguments to do prediction.
 
-## Citation
-Cite us if you use our model, code or data:
-```
-@inproceedings{patel20tailornet,
-        title = {TailorNet: Predicting Clothing in 3D as a Function of Human Pose, Shape and Garment Style},
-        author = {Patel, Chaitanya and Liao, Zhouyingcheng and Pons-Moll, Gerard},
-        booktitle = {{IEEE} Conference on Computer Vision and Pattern Recognition (CVPR)},
-        month = {jun},
-        organization = {{IEEE}},
-        year = {2020},
-    }
-```
+#### Inference Time
+In the paper, we report inference time to be 1-2 ms per frame(depending upon garment) which is averaged inference time over the batch of 21 samples(20-40 ms per batch). We apologize for not clearly mentioning that in the paper. Running each sample separately takes almost same time as batch - around 20 ms per frame for all garments. However, note that TailorNet has 21 independent MLPs, so we believe that faster inference time is possible if MLPs are configured to run in parallel on GPU cores.
 
 ### Misc
 - See [./models/skirt_model.md](./models/skirt_model.md) for the explanation of skirt garment model.
