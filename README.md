@@ -43,6 +43,8 @@ scipy
 [chumpy](https://github.com/mattloper/chumpy)  
 [psbody.mesh](https://github.com/MPI-IS/mesh)
 
+Code works with psbody.mesh v0.4 , pytorch >= v1.0 , chumpy v0.7 and scipy v1.3 .
+
 ## How to Run
 - Download and prepare SMPL model and TailorNet data from [dataset repository](https://github.com/zycliao/TailorNet_dataset).
 - Set DATA_DIR and SMPL paths in `global_var.py` file accordingly.
