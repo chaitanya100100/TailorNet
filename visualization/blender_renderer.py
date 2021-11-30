@@ -240,8 +240,9 @@ if __name__ == "__main__":
         't-shirt': 1,
         'old-t-shirt': 1,
         'shirt': 2,
-        'pants': 3,
+        'pant': 3,
         'skirt': 4,
+        'short-pant': 3,
     }
 
     if args.body is not None:
