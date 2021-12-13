@@ -114,8 +114,10 @@ def run_tailornet():
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
-    a = np.append(pred_gar.v, t, axis = 1)
 
+    #TODO: sort and return the order only no need to swap the lists
+    # and no need to append the array
+    a = np.append(pred_gar.v, t, axis = 1)
     pred_gar_sorted = a[a[:,1].argsort()]
 
     ssss = time.time()
@@ -128,6 +130,7 @@ def color_map(pred_gar, body):
     n = len(pred_gar.v)
     m = n/10
 
+    #TODO: change 10 to a number that the vertices can divide on with no reminder
     for x in range(10):
       mean_dist = 0
       for j in range(int(m)):
@@ -136,7 +139,7 @@ def color_map(pred_gar, body):
       for j in range(int(m)):
         closest[int(pred_gar_sorted[x*int(m)+j][-1])] = mean_dist
 
-    # # blend
+    #TODO:blend ( using gaussian function ? )
     # for x in range(9):
     #   mean_dist = 0
     #   for j in range(int(m)):
@@ -148,17 +151,22 @@ def color_map(pred_gar, body):
     print("after dist mean change time = ",time.time() - start)
     start = time.time()
 
+    #TODO: not supposed to call this one 
     pred_gar.set_vertex_colors(np.array([0,1,0]))
 
-    tmp = np.asarray(closest)
-    g = (tmp > .0075)
-    r = (tmp < .0091)
-    print(np.min(tmp))
-    print(np.max(tmp))
+    
+    #TODO: change to more meaningfull threasholds
+    g = (closest > .0075)
+    r = (closest < .0091)
+
+    print(np.min(closest))
+    print(np.max(closest))
+
+    #TODO: send the whole vector ?
     for j in range(len(closest)):
       pred_gar.set_vertex_colors(np.array([r[j], g[j], 0]),j)
-    print("after coloring time = ", time .time() - start)
 
+    print("after coloring time = ", time .time() - start)
     print("all time  = " ,time.time()-ssss)
 
 def render_images():
