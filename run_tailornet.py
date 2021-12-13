@@ -30,6 +30,11 @@ def get_single_frame_inputs(garment_class, gender):
     ]
     # old t-shirt style parameters are centered around [1.5, 0.5, 1.5, 0.0]
     # whereas all other garments styles are centered around [0, 0, 0, 0]
+    # TODO: change garment style & size 
+    # neg value for gamma[0] -> taller pants
+    # neg value for gamma[1] -> tighter pants
+    # neg value for gamma[2] -> TODO
+    # neg value for gamma[3] -> TODO
     if garment_class == 'old-t-shirt':
         gammas = [
             get_specific_style_old_tshirt('mean'),
