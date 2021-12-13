@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import torch
+import time
 
 from psbody.mesh import Mesh
 
@@ -73,7 +74,7 @@ def get_sequence_inputs(garment_class, gender):
 
 def run_tailornet():
     gender = 'female'
-    garment_class = 'skirt'
+    garment_class = 'short-pant'
     thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
     # # uncomment the line below to run inference on sequence data
     # thetas, betas, gammas = get_sequence_inputs(garment_class, gender)
@@ -104,10 +105,61 @@ def run_tailornet():
         body, pred_gar = smpl.run(beta=beta, theta=theta, garment_class=garment_class, garment_d=pred_verts_d)
         pred_gar = remove_interpenetration_fast(pred_gar, body)
 
+        # color the verticies
+        color_map(pred_gar,body);
+
         # save body and predicted garment
         body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
         pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
 
+def color_map(pred_gar, body):
+    t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
+    a = np.append(pred_gar.v, t, axis = 1)
+
+    pred_gar_sorted = a[a[:,1].argsort()]
+
+    ssss = time.time()
+    start  = time.time()
+    closest = np.asarray(body.closest_vertices(pred_gar.v)[1]) # (verts , dist)
+    print("closest time = ",time.time() - start)
+
+    start = time.time()
+
+    n = len(pred_gar.v)
+    m = n/10
+
+    for x in range(10):
+      mean_dist = 0
+      for j in range(int(m)):
+        mean_dist = mean_dist + closest[int(pred_gar_sorted[x*int(m) + j][-1])]
+      mean_dist = mean_dist/m
+      for j in range(int(m)):
+        closest[int(pred_gar_sorted[x*int(m)+j][-1])] = mean_dist
+
+    # # blend
+    # for x in range(9):
+    #   mean_dist = 0
+    #   for j in range(int(m)):
+    #     mean_dist = mean_dist + closest[int(pred_gar_sorted[x*int(m) + j + int(m/2)][-1])]
+    #   mean_dist = mean_dist/m
+    #   for j in range(int(m)):
+    #     closest[int(pred_gar_sorted[x*int(m)+j+int(m/2)][-1])] = mean_dist
+
+    print("after dist mean change time = ",time.time() - start)
+    start = time.time()
+
+    pred_gar.set_vertex_colors(np.array([0,1,0]))
+
+    tmp = np.asarray(closest)
+    g = (tmp > .0075)
+    r = (tmp < .0091)
+    print(np.min(tmp))
+    print(np.max(tmp))
+    for j in range(len(closest)):
+      pred_gar.set_vertex_colors(np.array([r[j], g[j], 0]),j)
+    print("after coloring time = ", time .time() - start)
+
+    print("all time  = " ,time.time()-ssss)
 
 def render_images():
     """Render garment and body using blender."""
