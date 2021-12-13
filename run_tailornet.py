@@ -16,7 +16,7 @@ from visualization.vis_utils import get_specific_shape, get_amass_sequence_theta
 from utils.interpenetration import remove_interpenetration_fast
 
 # Set output path where inference results will be stored
-OUT_PATH = "/BS/cpatel/work/code_test2"
+OUT_PATH = "/content/output"
 
 
 def get_single_frame_inputs(garment_class, gender):
