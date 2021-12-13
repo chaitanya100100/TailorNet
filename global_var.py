@@ -3,7 +3,7 @@ import os
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Dataset root directory. Change it to point to downloaded data root directory.
-DATA_DIR = '/content/models'
+DATA_DIR = '/content/data'
 
 # Set the paths to SMPL model
 SMPL_PATH_NEUTRAL = '/content/models/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl'
