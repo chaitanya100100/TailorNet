@@ -111,7 +111,9 @@ def run_tailornet():
         pred_gar = remove_interpenetration_fast(pred_gar, body)
 
         # color the verticies
-        color_map(pred_gar,body);
+        #color_map(pred_gar,body);
+
+        body.set_texture_image('/content/body_tex.jpg') 
 
         # save body and predicted garment
         body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
