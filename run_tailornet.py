@@ -23,10 +23,10 @@ def get_single_frame_inputs(garment_class, gender):
     """Prepare some individual frame inputs."""
     betas = [
         get_specific_shape('tallthin'),
-        get_specific_shape('shortfat'),
-        get_specific_shape('mean'),
-        get_specific_shape('somethin'),
-        get_specific_shape('somefat'),
+        #get_specific_shape('shortfat'),
+        #get_specific_shape('mean'),
+        #get_specific_shape('somethin'),
+        #get_specific_shape('somefat'),
     ]
     # old t-shirt style parameters are centered around [1.5, 0.5, 1.5, 0.0]
     # whereas all other garments styles are centered around [0, 0, 0, 0]
@@ -38,25 +38,25 @@ def get_single_frame_inputs(garment_class, gender):
     if garment_class == 'old-t-shirt':
         gammas = [
             get_specific_style_old_tshirt('mean'),
-            get_specific_style_old_tshirt('big'),
-            get_specific_style_old_tshirt('small'),
-            get_specific_style_old_tshirt('shortsleeve'),
-            get_specific_style_old_tshirt('big_shortsleeve'),
+            #get_specific_style_old_tshirt('big'),
+            #get_specific_style_old_tshirt('small'),
+            #get_specific_style_old_tshirt('shortsleeve'),
+            #get_specific_style_old_tshirt('big_shortsleeve'),
         ]
     else:
         gammas = [
             get_style('000', garment_class=garment_class, gender=gender),
-            get_style('001', garment_class=garment_class, gender=gender),
-            get_style('002', garment_class=garment_class, gender=gender),
-            get_style('003', garment_class=garment_class, gender=gender),
-            get_style('004', garment_class=garment_class, gender=gender),
+            #get_style('001', garment_class=garment_class, gender=gender),
+            #get_style('002', garment_class=garment_class, gender=gender),
+            #get_style('003', garment_class=garment_class, gender=gender),
+            #get_style('004', garment_class=garment_class, gender=gender),
         ]
     thetas = [
         get_specific_pose(0),
-        get_specific_pose(1),
-        get_specific_pose(2),
-        get_specific_pose(3),
-        get_specific_pose(4),
+        #get_specific_pose(1),
+        #get_specific_pose(2),
+        #get_specific_pose(3),
+        #get_specific_pose(4),
     ]
     return thetas, betas, gammas
 
