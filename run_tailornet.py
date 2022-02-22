@@ -116,8 +116,8 @@ def run_tailornet():
         pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
 
         # save body and predicted garment
-        body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
-        pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
+        body.write_obj(os.path.join(OUT_PATH, "body_{:04d}.obj".format(i)))
+        pred_gar.write_obj(os.path.join(OUT_PATH, "pred_gar_{:04d}.obj".format(i)))
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
