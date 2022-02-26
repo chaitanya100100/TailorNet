@@ -1,6 +1,6 @@
 import numpy as np
 import chumpy as ch
-from psbody.mesh import Mesh
+# from psbody.mesh import Mesh
 import torch
 import scipy.sparse as sp
 from chumpy.utils import row, col
