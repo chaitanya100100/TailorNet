@@ -116,8 +116,16 @@ def run_tailornet():
         pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
 
         # save body and predicted garment
-        body.write_obj(os.path.join(OUT_PATH, "body_{:04d}.obj".format(i)))
-        pred_gar.write_obj(os.path.join(OUT_PATH, "pred_gar_{:04d}.obj".format(i)))
+        body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
+        pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
+
+def save_with_tex(pred_gar,tex):
+    import pyvista as pv
+    tex = pv.read_texture('/content/TailorNet/tex.jpg')
+    surf = pv.read(pred_gar)
+    surf.texture_map_to_plane(inplace=True,use_bounds=True)
+    surf.textures['aerial-image'] = tex
+    surf.save(os.path.join(OUT_PATH,"pred_gar_0000_tex.ply"))
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
