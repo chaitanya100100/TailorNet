@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, ConcatDataset
 import pickle
 
 import global_var
-# from utils.diffusion_smoothing import DiffusionSmoothing
+from utils.diffusion_smoothing import DiffusionSmoothing
 from models.torch_smpl4garment import TorchSMPL4Garment
 
 
