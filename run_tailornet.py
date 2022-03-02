@@ -119,9 +119,12 @@ def run_tailornet(theta, beta,gender,garment_class):
 
         # save body and predicted garment
         # body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
-        body.write_ply("../src/models/body.ply")
+        body.write_ply("../models/body.ply")
+        body.write_obj("../models/obj/body.obj")
         # pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
-        pred_gar.write_ply("../src/models/gar.ply")
+        pred_gar.write_ply("../models/gar.ply")
+        pred_gar.write_obj("../models/obj/gar.obj")
+    os.system('python texture_mesh.py "../models/obj/gar.obj" "../models/tex/gar.jpg"')
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
