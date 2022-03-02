@@ -108,24 +108,18 @@ def run_tailornet():
 
         # get garment from predicted displacements
         body, pred_gar = smpl.run(beta=beta, theta=theta, garment_class=garment_class, garment_d=pred_verts_d)
-        pred_gar = remove_interpenetration_fast(pred_gar, body)
 
         # color the verticies
-        #color_map(pred_gar,body);
+        color_map(pred_gar,body);
 
-        pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
+        pred_gar = remove_interpenetration_fast(pred_gar, body)
+
+
+        # pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
 
         # save body and predicted garment
         body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
         pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
-
-def save_with_tex(pred_gar,tex):
-    import pyvista as pv
-    tex = pv.read_texture('/content/TailorNet/tex.jpg')
-    surf = pv.read(pred_gar)
-    surf.texture_map_to_plane(inplace=True,use_bounds=True)
-    surf.textures['aerial-image'] = tex
-    surf.save(os.path.join(OUT_PATH,"pred_gar_0000_tex.ply"))
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
@@ -167,12 +161,15 @@ def color_map(pred_gar, body):
     start = time.time()
 
     #TODO: not supposed to call this one 
-    pred_gar.set_vertex_colors(np.array([0,1,0]))
+    pred_gar.set_vertex_colors(np.array([0,0,0]))
 
     
     #TODO: change to more meaningfull threasholds
-    g = (closest > .0075)
-    r = (closest < .0091)
+    # g = (closest > .0075)
+    # r = (closest < .0091)
+
+    y = ((closest > .0075) && (closest < .0091))
+    r = (closest =< .0075)
 
     print(np.min(closest))
     print(np.max(closest))
