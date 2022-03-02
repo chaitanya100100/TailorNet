@@ -77,10 +77,11 @@ def get_sequence_inputs(garment_class, gender):
     return thetas, betas, gammas
 
 
-def run_tailornet():
-    gender = 'female'
-    garment_class = 'short-pant'
-    thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
+def run_tailornet(theta, beta,gender,garment_class):
+    #gender = 'female'
+    #garment_class = 'short-pant'
+    # thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
+    gammas = get_style('000', garment_class=garment_class, gender=gender)
     # # uncomment the line below to run inference on sequence data
     # thetas, betas, gammas = get_sequence_inputs(garment_class, gender)
 
@@ -109,17 +110,18 @@ def run_tailornet():
         # get garment from predicted displacements
         body, pred_gar = smpl.run(beta=beta, theta=theta, garment_class=garment_class, garment_d=pred_verts_d)
 
-        # color the verticies
-        color_map(pred_gar,body);
-
         pred_gar = remove_interpenetration_fast(pred_gar, body)
 
+        # color the verticies
+        color_map(pred_gar,body);
 
         # pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
 
         # save body and predicted garment
-        body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
-        pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
+        # body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
+        body.write_ply("../src/models/body.ply")
+        # pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
+        pred_gar.write_ply("../src/models/gar.ply")
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
@@ -165,11 +167,8 @@ def color_map(pred_gar, body):
 
     
     #TODO: change to more meaningfull threasholds
-    # g = (closest > .0075)
-    # r = (closest < .0091)
-
-    y = ((closest > .0075) && (closest < .0091))
-    r = (closest =< .0075)
+    g = (closest > .0075)
+    r = (closest < .0091)
 
     print(np.min(closest))
     print(np.max(closest))
@@ -204,9 +203,10 @@ def render_images():
 
 if __name__ == '__main__':
     import sys
-    if len(sys.argv) == 1 or sys.argv[1] == 'inference':
-        run_tailornet()
-    elif sys.argv[1] == 'render':
-        render_images()
-    else:
-        raise AttributeError
+    # if len(sys.argv) == 1 or sys.argv[1] == 'inference':
+        #run_tailornet()
+    run_tailornet(sys.argv[1],sys.argv[2],sys.argv[3] ,sys.argv[4])
+    #elif sys.argv[1] == 'render':
+        #render_images()
+    #else:
+        #raise AttributeError
