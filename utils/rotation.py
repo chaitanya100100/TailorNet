@@ -2,7 +2,7 @@ import os
 import numpy as np
 import cv2
 import pickle
-import global_var
+import TailorNet.global_var
 
 
 def flip_theta(theta, batch=False):

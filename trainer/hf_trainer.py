@@ -6,11 +6,11 @@ import numpy as np
 import json
 import pickle
 
-from models import networks
-from models import ops
-from dataset.static_pose_shape_final import OneStyleShapeHF
-import global_var
-from trainer import base_trainer
+from TailorNet.models import networks
+from TailorNet.models import ops
+from TailorNet.dataset.static_pose_shape_final import OneStyleShapeHF
+import TailorNet.global_var
+from TailorNet.trainer import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")

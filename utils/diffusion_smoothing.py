@@ -1,7 +1,7 @@
 import numpy as np
 import scipy
 import scipy.sparse as sp
-from psbody.mesh import Mesh, MeshViewer
+from TailorNet.psbody.mesh import Mesh, MeshViewer
 
 
 def numpy_laplacian_uniform(v, f):

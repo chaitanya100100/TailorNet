@@ -1,0 +1,1 @@
+{"local_config": "", "garment_class": "short-pant", "gender": "female", "shape_style": "006_004", "vis_freq": 16, "batch_size": 32, "lr": 0.0001, "weight_decay": 1e-06, "max_epoch": 800, "start_epoch": 0, "checkpoint": "", "log_name": "tn_hf", "smooth_level": 1, "model_name": "FullyConnected", "num_layers": 3, "hidden_size": 1024, "note": "TailorNet high frequency prediction"}

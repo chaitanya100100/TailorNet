@@ -3,23 +3,21 @@ import numpy as np
 import torch
 import time
 
-from models.tailornet_model import get_best_runner as get_tn_runner
-from models.smpl4garment import SMPL4Garment
-from utils.rotation import normalize_y_rotation
+from TailorNet.models.tailornet_model import get_best_runner as get_tn_runner
+from TailorNet.models.smpl4garment import SMPL4Garment
+from TailorNet.utils.rotation import normalize_y_rotation
 
 # from dataset.canonical_pose_dataset import get_style, get_shape
-from dataset.canonical_pose_dataset import get_style
-from utils.interpenetration import remove_interpenetration_fast
-from visualization.vis_utils import get_specific_pose
-from visualization.vis_utils import get_specific_shape
+from TailorNet.dataset.canonical_pose_dataset import get_style
+from TailorNet.utils.interpenetration import remove_interpenetration_fast
+from TailorNet.visualization.vis_utils import get_specific_pose
+from TailorNet.visualization.vis_utils import get_specific_shape
 
-# Set output path where inference results will be stored
-OUT_PATH = "/content/output"
 
 def gen_body(theta=get_specific_pose(0),beta=get_specific_shape('mean'),gender='female'):
     smpl = SMPL4Garment(gender=gender)
     body,_ = smpl.run(beta=beta, theta=theta)
-    body.write_obj("../models/obj/body.obj")
+    body.write_obj("./src/models/obj/body.obj")
 
 def gen_body_gar(theta=get_specific_pose(0), beta=get_specific_shape('mean'), gender='female', garment_class='short-pant'):
     gamma = get_style('000', garment_class=garment_class, gender=gender)
@@ -28,10 +26,6 @@ def gen_body_gar(theta=get_specific_pose(0), beta=get_specific_shape('mean'), ge
     tn_runner = get_tn_runner(gender=gender, garment_class=garment_class)
 
     smpl = SMPL4Garment(gender=gender)
-
-    # make out directory if doesn't exist
-    if not os.path.isdir(OUT_PATH):
-        os.mkdir(OUT_PATH)
 
     # run inference
     theta_normalized = normalize_y_rotation(theta)
@@ -48,7 +42,7 @@ def gen_body_gar(theta=get_specific_pose(0), beta=get_specific_shape('mean'), ge
     pred_gar = remove_interpenetration_fast(pred_gar, body)
 
     # color the verticies
-    color_map(pred_gar,body);
+    color_map(pred_gar,body)
 
     # pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
 

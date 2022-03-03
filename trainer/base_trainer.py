@@ -7,14 +7,14 @@ import numpy as np
 import json
 import pickle
 
-from models import networks
-from models import ops
-from models.smpl4garment import SMPL4Garment
-from dataset.static_pose_shape_final import MultiStyleShape
-from utils.eval import AverageMeter
-from utils.logger import TailorNetLogger
-from utils import sio
-import global_var
+from TailorNet.models import networks
+from TailorNet.models import ops
+from TailorNet.models.smpl4garment import SMPL4Garment
+from TailorNet.dataset.static_pose_shape_final import MultiStyleShape
+from TailorNet.utils.eval import AverageMeter
+from TailorNet.utils.logger import TailorNetLogger
+from TailorNet.utils import sio
+import TailorNet.global_var
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")

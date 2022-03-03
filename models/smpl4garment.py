@@ -3,11 +3,11 @@ import pickle
 import chumpy as ch
 import numpy as np
 import cv2
-from psbody.mesh import Mesh
-from smpl_lib.ch_smpl import Smpl
-from utils.smpl_paths import SmplPaths
+from TailorNet.psbody.mesh import Mesh
+from TailorNet.smpl_lib.ch_smpl import Smpl
+from TailorNet.utils.smpl_paths import SmplPaths
 
-import global_var
+from TailorNet import global_var
 
 
 class SMPL4Garment(object):

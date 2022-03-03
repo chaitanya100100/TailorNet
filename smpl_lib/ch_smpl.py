@@ -9,7 +9,7 @@ from chumpy.ch import Ch
 from .posemapper import posemap, Rodrigues
 from .serialization import backwards_compatibility_replacements
 
-from smpl_lib.ch import sp_dot
+from TailorNet.smpl_lib.ch import sp_dot
 
 
 class Smpl(Ch):

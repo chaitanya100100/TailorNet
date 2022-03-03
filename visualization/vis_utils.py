@@ -3,7 +3,7 @@ import numpy as np
 
 def get_amass_sequence_thetas(which):
     # ['01_08', '01_14', '05_02', '05_04', '05_05', '05_06', '05_07', '86_07']
-    seqs = np.load('./visualization/amass_sequences.npy', allow_pickle=True, encoding='latin1').item()
+    seqs = np.load('./TailorNet/visualization/amass_sequences.npy', allow_pickle=True, encoding='latin1').item()
     assert(which in seqs.keys())
     return seqs[which]
 
@@ -36,7 +36,7 @@ def get_specific_pose(which):
     `which` index can be 0, 1, 2, ..., 10
     0 - apose
     """
-    thetas = np.load('./visualization/some_thetas.npy')
+    thetas = np.load('./src/TailorNet/visualization/some_thetas.npy')
     which = int(which)
     return thetas[which]
 

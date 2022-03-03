@@ -3,8 +3,8 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-import global_var
-from utils.rotation import get_Apose
+import TailorNet.global_var
+from TailorNet.utils.rotation import get_Apose
 
 
 def get_style(style_idx, gender, garment_class):

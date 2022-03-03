@@ -1,8 +1,8 @@
 import numpy as np
 import pickle as pkl
-from smpl_lib.serialization import backwards_compatibility_replacements, load_model
+from TailorNet.smpl_lib.serialization import backwards_compatibility_replacements, load_model
 import scipy.sparse as sp
-from global_var import SMPL_PATH_NEUTRAL, SMPL_PATH_MALE, SMPL_PATH_FEMALE
+from TailorNet.global_var import SMPL_PATH_NEUTRAL, SMPL_PATH_MALE, SMPL_PATH_FEMALE
 
 def get_hres(v, f):
     """

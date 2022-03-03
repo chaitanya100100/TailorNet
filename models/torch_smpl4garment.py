@@ -6,8 +6,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pickle
 
-import global_var
-from utils.smpl_paths import SmplPaths
+import TailorNet.global_var
+from TailorNet.utils.smpl_paths import SmplPaths
 
 
 class TorchSMPL4Garment(nn.Module):

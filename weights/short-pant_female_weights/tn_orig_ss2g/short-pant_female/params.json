@@ -1,0 +1,1 @@
+{"local_config": "", "garment_class": "short-pant", "gender": "female", "shape_style": "", "vis_freq": 512, "batch_size": 32, "lr": 0.001, "weight_decay": 1e-05, "max_epoch": 400, "start_epoch": 0, "checkpoint": "", "log_name": "tn_ss2g", "smooth_level": 0, "model_name": "FullyConnected", "num_layers": 3, "hidden_size": 128, "note": "SS2G training"}

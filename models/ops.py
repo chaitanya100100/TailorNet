@@ -1,5 +1,5 @@
 import torch
-from global_var import VALID_THETA
+from TailorNet.global_var import VALID_THETA
 
 
 def verts_dist(v1, v2, dim=None):

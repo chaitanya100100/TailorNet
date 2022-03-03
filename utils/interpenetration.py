@@ -3,13 +3,13 @@ import numpy as np
 import scipy.sparse as sp
 from scipy.sparse import vstack, csr_matrix
 from scipy.sparse.linalg import spsolve
-from psbody.mesh import Mesh
+from TailorNet.psbody.mesh import Mesh
 
-from psbody.mesh import Mesh
-from psbody.mesh.geometry.vert_normals import VertNormals
-from psbody.mesh.geometry.tri_normals import TriNormals
-from psbody.mesh.search import AabbTree
-from utils.diffusion_smoothing import numpy_laplacian_uniform as laplacian
+from TailorNet.psbody.mesh import Mesh
+from TailorNet.psbody.mesh.geometry.vert_normals import VertNormals
+from TailorNet.psbody.mesh.geometry.tri_normals import TriNormals
+from TailorNet.psbody.mesh.search import AabbTree
+from TailorNet.utils.diffusion_smoothing import numpy_laplacian_uniform as laplacian
 
 
 def get_nearest_points_and_normals(vert, base_verts, base_faces):

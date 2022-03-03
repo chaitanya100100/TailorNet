@@ -2,11 +2,11 @@ import torch
 import numpy as np
 import os
 
-import global_var
-from trainer.lf_trainer import get_best_runner as lf_runner
-from trainer.hf_trainer import get_best_runner as hf_runner
-from trainer.ss2g_trainer import get_best_runner as ss2g_runner
-from dataset.canonical_pose_dataset import ShapeStyleCanonPose
+import TailorNet.global_var
+from TailorNet.trainer.lf_trainer import get_best_runner as lf_runner
+from TailorNet.trainer.hf_trainer import get_best_runner as hf_runner
+from TailorNet.trainer.ss2g_trainer import get_best_runner as ss2g_runner
+from TailorNet.dataset.canonical_pose_dataset import ShapeStyleCanonPose
 
 
 class TailorNetModel(object):

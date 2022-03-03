@@ -7,7 +7,7 @@ from os.path import join as opj
 import cv2
 import struct
 import numpy as np
-import global_var
+import TailorNet.global_var
 
 
 def backup_file(src, dst):

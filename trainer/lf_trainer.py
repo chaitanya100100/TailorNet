@@ -2,7 +2,7 @@ import argparse
 import json
 import os
 import torch
-from trainer import base_trainer
+from TailorNet.trainer import base_trainer
 
 device = torch.device("cuda:0")
 # device = torch.device("cpu")
