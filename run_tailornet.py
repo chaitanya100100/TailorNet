@@ -78,7 +78,7 @@ OUT_PATH = "/content/output"
 #     return thetas, betas, gammas
 
 
-def run_tailornet(theta, beta,gender,garment_class):
+def run_tailornet(thetas=get_specific_pose(0), betas=get_specific_shape('mean'), gender='female', garment_class='short-pant'):
     #gender = 'female'
     #garment_class = 'short-pant'
     # thetas, betas, gammas = get_single_frame_inputs(garment_class, gender)
