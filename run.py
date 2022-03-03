@@ -16,9 +16,9 @@ from visualization.vis_utils import get_specific_shape
 # Set output path where inference results will be stored
 OUT_PATH = "/content/output"
 
-def gen_body(thetas=get_specific_pose(0),betas=get_specific_shape('mean')):
+def gen_body(thetas=get_specific_pose(0),betas=get_specific_shape('mean'),gender='female'):
     smpl = SMPL4Garment(gender=gender)
-    body,_ = smpl.run(beta=beta, theta=theta)
+    body,_ = smpl.run(beta=betas, theta=thetas)
     body.write_obj("../models/obj/body.obj")
 
 def gen_body_gar(thetas=get_specific_pose(0), betas=get_specific_shape('mean'), gender='female', garment_class='short-pant'):
