@@ -1,8 +1,6 @@
 import sys
 import bpy 
 
-garment_class = sys.argv[10]
-
 for i in bpy.data.objects:
     bpy.data.objects.remove(i, do_unlink=True)
 
