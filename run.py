@@ -16,13 +16,13 @@ from visualization.vis_utils import get_specific_shape
 # Set output path where inference results will be stored
 OUT_PATH = "/content/output"
 
-def gen_body(thetas=get_specific_pose(0),betas=get_specific_shape('mean'),gender='female'):
+def gen_body(theta=get_specific_pose(0),beta=get_specific_shape('mean'),gender='female'):
     smpl = SMPL4Garment(gender=gender)
-    body,_ = smpl.run(beta=betas, theta=thetas)
+    body,_ = smpl.run(beta=beta, theta=theta)
     body.write_obj("../models/obj/body.obj")
 
-def gen_body_gar(thetas=get_specific_pose(0), betas=get_specific_shape('mean'), gender='female', garment_class='short-pant'):
-    gammas = get_style('000', garment_class=garment_class, gender=gender)
+def gen_body_gar(theta=get_specific_pose(0), beta=get_specific_shape('mean'), gender='female', garment_class='short-pant'):
+    gamma = get_style('000', garment_class=garment_class, gender=gender)
 
     # load model
     tn_runner = get_tn_runner(gender=gender, garment_class=garment_class)
@@ -34,35 +34,32 @@ def gen_body_gar(thetas=get_specific_pose(0), betas=get_specific_shape('mean'), 
         os.mkdir(OUT_PATH)
 
     # run inference
-    for i, (theta, beta, gamma) in enumerate(zip(thetas, betas, gammas)):
-        print(i, len(thetas))
-        # normalize y-rotation to make it front facing
-        theta_normalized = normalize_y_rotation(theta)
-        with torch.no_grad():
-            pred_verts_d = tn_runner.forward(
-                thetas=torch.from_numpy(theta_normalized[None, :].astype(np.float32)).cuda(),
-                betas=torch.from_numpy(beta[None, :].astype(np.float32)).cuda(),
-                gammas=torch.from_numpy(gamma[None, :].astype(np.float32)).cuda(),
-            )[0].cpu().numpy()
+    theta_normalized = normalize_y_rotation(theta)
+    with torch.no_grad():
+        pred_verts_d = tn_runner.forward(
+            thetas=torch.from_numpy(theta_normalized[None, :].astype(np.float32)).cuda(),
+            betas=torch.from_numpy(beta[None, :].astype(np.float32)).cuda(),
+            gammas=torch.from_numpy(gamma[None, :].astype(np.float32)).cuda(),
+        )[0].cpu().numpy()
 
-        # get garment from predicted displacements
-        body, pred_gar = smpl.run(beta=beta, theta=theta, garment_class=garment_class, garment_d=pred_verts_d)
+    # get garment from predicted displacements
+    body, pred_gar = smpl.run(beta=beta, theta=theta, garment_class=garment_class, garment_d=pred_verts_d)
 
-        pred_gar = remove_interpenetration_fast(pred_gar, body)
+    pred_gar = remove_interpenetration_fast(pred_gar, body)
 
-        # color the verticies
-        color_map(pred_gar,body);
+    # color the verticies
+    color_map(pred_gar,body);
 
-        # pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
+    # pred_gar.set_texture_image('/content/TailorNet/tex.jpg') 
 
-        # save body and predicted garment
-        # body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
-        body.write_ply("../models/body.ply")
-        body.write_obj("../models/obj/body.obj")
-        # pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
-        pred_gar.write_ply("../models/gar.ply")
-        pred_gar.write_obj("../models/obj/gar.obj")
-    os.system('python texture_mesh.py "../models/obj/gar.obj" "../models/tex/gar.jpg"')
+    # save body and predicted garment
+    # body.write_ply(os.path.join(OUT_PATH, "body_{:04d}.ply".format(i)))
+    body.write_ply("../models/body.ply")
+    body.write_obj("../models/obj/body.obj")
+    # pred_gar.write_ply(os.path.join(OUT_PATH, "pred_gar_{:04d}.ply".format(i)))
+    pred_gar.write_ply("../models/gar.ply")
+    pred_gar.write_obj("../models/obj/gar.obj")
+    os.system('blender -b -P texture_mesh.py "../models/obj/gar.obj" "../models/tex/gar.jpg"')
 
 def color_map(pred_gar, body):
     t = np.arange(len(pred_gar.v)).reshape(len(pred_gar.v),1)
