@@ -122,5 +122,7 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) == 1:
         gen_body()
+    elif len(sys.argv) == 4:
+        gen_body(sys.argv[1],sys.argv[2],sys.argv[3])
     else:
         gen_body_gar(sys.argv[1],sys.argv[2],sys.argv[3] ,sys.argv[4])
